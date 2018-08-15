@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Content/Css/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/Css/Site.css" />
+    <title>_Layout</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("Produtos", "Index", "Produto")</li>
+
+            </ul>
+            <h3 class="muted-text">Caelum Estoque</h3>
+        </div>
+        <div id="conteudo">
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>
