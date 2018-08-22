@@ -8,8 +8,9 @@ namespace SistemaRestaurante.Models
     public class Mesa
     {
 
-        public int Id { get; set; }
+        public int MesaId { get; set; }
         public int Numero { get; set; }
-        public IList<Comanda> Comandas { get; set; }
+        public IList<MesaComanda> Comandas { get; set; }
+
     }
 }

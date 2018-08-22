@@ -10,11 +10,12 @@ namespace SistemaRestaurante
     public class RestauranteContext : DbContext 
     {
 
-        public DbSet<Comanda> Comandas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
+        public DbSet<Comanda> Comandas { get; set; }
+        public DbSet<MesaComanda> MesasComandas { get; set; }
         public DbSet<Cartao> Cartoes { get; set; }
 
 
@@ -24,6 +25,8 @@ namespace SistemaRestaurante
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=RestauranteDb;Trusted_Connection=true;");
            
         }
+
+       
 
         
         

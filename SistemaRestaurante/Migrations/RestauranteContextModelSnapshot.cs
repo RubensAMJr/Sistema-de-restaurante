@@ -36,34 +36,50 @@ namespace SistemaRestaurante.Migrations
 
             modelBuilder.Entity("SistemaRestaurante.Models.Comanda", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ComandaId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("MesaId");
 
                     b.Property<string>("Numero");
 
                     b.Property<double>("ValorTotal");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("MesaId");
+                    b.HasKey("ComandaId");
 
                     b.ToTable("Comandas");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Mesa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MesaId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Numero");
 
-                    b.HasKey("Id");
+                    b.HasKey("MesaId");
 
                     b.ToTable("Mesas");
+                });
+
+            modelBuilder.Entity("SistemaRestaurante.Models.MesaComanda", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ComandaId");
+
+                    b.Property<int>("MesaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComandaId")
+                        .IsUnique();
+
+                    b.HasIndex("MesaId");
+
+                    b.ToTable("MesasComandas");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>
@@ -119,11 +135,17 @@ namespace SistemaRestaurante.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("SistemaRestaurante.Models.Comanda", b =>
+            modelBuilder.Entity("SistemaRestaurante.Models.MesaComanda", b =>
                 {
+                    b.HasOne("SistemaRestaurante.Models.Comanda")
+                        .WithOne("Mesa")
+                        .HasForeignKey("SistemaRestaurante.Models.MesaComanda", "ComandaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SistemaRestaurante.Models.Mesa")
                         .WithMany("Comandas")
-                        .HasForeignKey("MesaId");
+                        .HasForeignKey("MesaId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>

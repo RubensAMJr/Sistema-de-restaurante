@@ -34,7 +34,7 @@ namespace SistemaRestaurante.DAO
 
             using (var contexto = new RestauranteContext())
             {
-                Comanda atualizado = Listar().Where(p => p.Id == comanda.Id).FirstOrDefault();
+                Comanda atualizado = Listar().Where(p => p.ComandaId == comanda.ComandaId).FirstOrDefault();
                 atualizado = comanda;
                 contexto.SaveChanges();
             }

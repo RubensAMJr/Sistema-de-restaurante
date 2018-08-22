@@ -13,5 +13,16 @@ namespace SistemaRestaurante.Controllers
         {
             return View();
         }
+
+        public ActionResult Registrar()
+        {
+
+            return View();
+        }
+
+        public ActionResult Autentica(String login,String senha)
+        {
+            return RedirectToAction("Index","Home");
+        }
     }
 }
