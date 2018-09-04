@@ -1,4 +1,5 @@
 ﻿using SistemaRestaurante.DAO;
+using SistemaRestaurante.Filters;
 using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,10 @@ using System.Web.Mvc;
 
 namespace SistemaRestaurante.Controllers
 {
+    [AutorizacacoFilter]
     public class ProdutosController : Controller
     {
-        // GET: Produtos
+        [Route("Produtos",Name ="ViewProdutos")]
         public ActionResult Index()
         {
             ProdutoDAO dao = new ProdutoDAO();

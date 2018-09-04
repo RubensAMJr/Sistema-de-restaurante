@@ -169,18 +169,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\CSS\buttons.dataTables.min.css" />
     <Content Include="Content\CSS\Main.css" />
     <Content Include="Content\CSS\reset.css" />
     <Content Include="Content\CSS\sb-admin.css" />
     <Content Include="Content\CSS\sb-admin.min.css" />
+    <Content Include="Content\CSS\select.bootstrap4.min.css" />
+    <Content Include="Content\CSS\select.dataTables.min.css" />
     <Content Include="Content\IMG\bennerLogo.png" />
     <Content Include="Content\IMG\RestauranteIcone .png" />
+    <Content Include="Content\js\dataTables.buttons.min.js" />
+    <Content Include="Content\js\dataTables.select.min.js" />
     <Content Include="Content\js\demo\chart-area-demo.js" />
     <Content Include="Content\js\demo\chart-bar-demo.js" />
     <Content Include="Content\js\demo\chart-pie-demo.js" />
     <Content Include="Content\js\demo\datatables-demo.js" />
     <Content Include="Content\js\sb-admin.js" />
     <Content Include="Content\js\sb-admin.min.js" />
+    <Content Include="Content\js\select.dataTables.min.js" />
     <Content Include="Content\Validator\validator.js" />
     <Content Include="Content\Validator\validator.min.js" />
     <Content Include="Content\vendor\bootstrap\css\bootstrap-grid.css" />
@@ -1553,9 +1559,11 @@
     <Compile Include="Controllers\ProdutosController.cs" />
     <Compile Include="DAO\ComandaDAO.cs" />
     <Compile Include="DAO\MesasDAO.cs" />
+    <Compile Include="DAO\ItemPedidoDAO.cs" />
     <Compile Include="DAO\PedidoDAO.cs" />
     <Compile Include="DAO\ProdutoDAO.cs" />
     <Compile Include="DAO\UsuarioDAO.cs" />
+    <Compile Include="Filters\AutorizacacoFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1575,13 +1583,47 @@
     <Compile Include="Migrations\20180817004150_MesaComanda.designer.cs">
       <DependentUpon>20180817004150_MesaComanda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20180822233724_Nova.cs" />
+    <Compile Include="Migrations\20180822233724_Nova.designer.cs">
+      <DependentUpon>20180822233724_Nova.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180823002531_tst.cs" />
+    <Compile Include="Migrations\20180823002531_tst.designer.cs">
+      <DependentUpon>20180823002531_tst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180823161009_ng.cs" />
+    <Compile Include="Migrations\20180823161009_ng.designer.cs">
+      <DependentUpon>20180823161009_ng.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180824170902_RelacaoMesaComanda.cs" />
+    <Compile Include="Migrations\20180824170902_RelacaoMesaComanda.designer.cs">
+      <DependentUpon>20180824170902_RelacaoMesaComanda.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180824172141_CorrecaoRelacaoMesaComanda.cs" />
+    <Compile Include="Migrations\20180824172141_CorrecaoRelacaoMesaComanda.designer.cs">
+      <DependentUpon>20180824172141_CorrecaoRelacaoMesaComanda.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180830164750_ItemPedido.cs" />
+    <Compile Include="Migrations\20180830164750_ItemPedido.designer.cs">
+      <DependentUpon>20180830164750_ItemPedido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180830173424_ItemPedido2.cs" />
+    <Compile Include="Migrations\20180830173424_ItemPedido2.designer.cs">
+      <DependentUpon>20180830173424_ItemPedido2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180830192527_enum.cs" />
+    <Compile Include="Migrations\20180830192527_enum.designer.cs">
+      <DependentUpon>20180830192527_enum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\Mesa.cs" />
     <Compile Include="Models\MesaComanda.cs" />
+    <Compile Include="Models\ItemPedido.cs" />
     <Compile Include="Models\Pedido.cs" />
     <Compile Include="Models\Produto.cs" />
     <Compile Include="Models\Comanda.cs" />
+    <Compile Include="Models\Usuarios\Roles.cs" />
     <Compile Include="Models\Usuarios\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAO\RestauranteContext.cs" />

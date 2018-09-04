@@ -8,9 +8,10 @@ namespace SistemaRestaurante.Models
     public class Pedido
     {
         public int Id { get; set; }
-        public Produto Produto { get; set; }
-        public string Observacao { get; set; }
-
-
+        public int UsuarioId { get; set; }
+        public int ComandaId { get; set; }
+        public DateTime Data { get; set; }
+        public double ValorTotal { get; set; }
+        public IList<ItemPedido> Itens { get; set; }
     }
 }

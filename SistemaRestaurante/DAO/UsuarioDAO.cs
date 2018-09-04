@@ -34,8 +34,7 @@ namespace SistemaRestaurante.DAO
 
             using (var contexto = new RestauranteContext())
             {
-                Usuario atualizado = Listar().Where(p => p.Id == usuario.Id).FirstOrDefault();
-                atualizado = usuario;
+                contexto.Usuarios.Update(usuario);
                 contexto.SaveChanges();
             }
         }
@@ -55,6 +54,22 @@ namespace SistemaRestaurante.DAO
             using (var contexto = new RestauranteContext())
             {
                 return contexto.Usuarios.Find(id);
+            }
+        }
+
+        public Usuario Busca(string usuario, string senha)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Usuarios.FirstOrDefault(u => u.Nome == usuario && u.Senha == senha);
+            }
+        }
+
+        public String BuscaCargo(string usuario)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Usuarios.FirstOrDefault(u => u.Nome == usuario).Cargo;
             }
         }
     }

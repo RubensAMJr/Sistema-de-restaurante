@@ -33,8 +33,7 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                Produto atualizado = Listar().Where(p => p.Id == produto.Id).FirstOrDefault();
-                atualizado = produto;
+                contexto.Produtos.Update(produto);
                 contexto.SaveChanges();
             }
         }

@@ -10,7 +10,10 @@ namespace SistemaRestaurante.Models
 
         public int MesaId { get; set; }
         public int Numero { get; set; }
-        public IList<MesaComanda> Comandas { get; set; }
 
+        public Mesa(int numero)
+        {
+            this.Numero = numero; 
+        }
     }
 }

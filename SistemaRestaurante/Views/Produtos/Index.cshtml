@@ -1,13 +1,14 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
 
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
 
     <title>Ambiente - Restaurante</title>
 
@@ -23,6 +24,9 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/buttons.dataTables.min.css" rel="stylesheet"/>
+    <link href="~/Content/CSS/select.bootstrap4.min.css" rel="stylesheet"/>
+    <link href="~/Content/CSS/select.dataTables.min.css" rel="stylesheet"/>
 </head>
 
 <body id="page-top">
@@ -66,7 +70,7 @@
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","Home")">
+                <a class="nav-link" href="@Url.RouteUrl("ViewMesa")">
 
                     <i class="fas fa-utensils"></i>
 
@@ -74,21 +78,27 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","Cozinha")">
+                <a class="nav-link" href="@Url.RouteUrl("ViewCozinha")">
                     <i class="fas fa-cookie"></i>
                     <span>Cozinha</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","Caixa")">
+                <a class="nav-link" href="@Url.RouteUrl("ViewCaixa")">
                     <i class="fas fa-dollar-sign"></i>
                     <span>Caixa</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="@Url.RouteUrl("ViewProdutos")">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Lista de Produtos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.RouteUrl("TelaRegistro")">
+                    <i class="fas fa-users"></i>
+                    <span>Registrar novo Usuário</span>
                 </a>
             </li>
         </ul>
@@ -105,7 +115,7 @@
                     <li class="breadcrumb-item active">Lista</li>
                 </ol>
 
-                
+
                 <!-- DataTables Example -->
                 <div class="card mb-3">
                     <div class="card-header">
@@ -114,7 +124,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -134,12 +144,19 @@
                                 <tbody>
                                     @foreach (var produto in ViewBag.Produtos)
                                     {
-                                    <tr>
-                                        <td>@produto.Nome</td>
-                                        <td>@produto.Preco</td>
-                                        <td>@produto.Descricao</td>
-                                        <td>@produto.EstaEmFalta</td>
-                                    </tr>
+                                        <tr>
+                                            <td>@produto.Nome</td>
+                                            <td>@produto.Preco</td>
+                                            <td>@produto.Descricao</td>
+                                            @if (produto.EstaEmFalta == true)
+                                            {
+                                                <td>SIM</td>
+                                            }
+                                            else
+                                            {
+                                                <td>NÃO</td>
+                                            }
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -181,7 +198,7 @@
                 <div class="modal-body">Selecione Logout se deseja Finalizar a sessão</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="@Url.Action("Index","Login")">Logout</a>
+                    <a class="btn btn-primary" href="@Url.RouteUrl("Sair")">Logout</a>
                 </div>
             </div>
         </div>
@@ -197,11 +214,12 @@
     <!-- Page level plugin JavaScript-->
     <script src="~/Content/vendor/datatables/jquery.dataTables.js"></script>
     <script src="~/Content/vendor/datatables/dataTables.bootstrap4.js"></script>
-
+    <script src="~/Content/js/dataTables.buttons.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="~/Content/js/sb-admin.min.js"></script>
 
     <!-- Demo scripts for this page-->
+    <script src="~/Content/js/dataTables.select.min.js"></script>
     <script src="~/Content/js/demo/datatables-demo.js"></script>
 
 </body>

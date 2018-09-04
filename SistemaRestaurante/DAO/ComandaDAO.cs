@@ -1,4 +1,5 @@
-﻿using SistemaRestaurante.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,25 +18,20 @@ namespace SistemaRestaurante.DAO
             }
         }
 
-        public IList<Comanda> Listar()
+        public IList<Comanda> ListarPorMesa(int mesaId)
         {
             using (var contexto = new RestauranteContext())
             {
-
-                return contexto.Comandas.ToList();
-
-
+                return contexto.Comandas.Where(c => c.MesaId == mesaId).ToList();
             }
-
         }
 
         public void Atualizar(Comanda comanda)
         {
-
             using (var contexto = new RestauranteContext())
             {
-                Comanda atualizado = Listar().Where(p => p.ComandaId == comanda.ComandaId).FirstOrDefault();
-                atualizado = comanda;
+                
+                contexto.Comandas.Update(comanda);
                 contexto.SaveChanges();
             }
         }

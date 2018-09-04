@@ -1,58 +1,58 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SistemaRestaurante.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Web;
+using SistemaRestaurante.Models;
 
 namespace SistemaRestaurante.DAO
 {
-    public class PedidoDAO
+    public class ItemPedidoDAO
     {
-        public void Adiciona(Pedido pedido)
+        public void Adiciona(ItemPedido item)
         {
             using (var contexto = new RestauranteContext())
             {
-                contexto.Pedido.Add(pedido);
+                contexto.ItensPedido.Add(item);
                 contexto.SaveChanges();
             }
         }
 
-        public IList<Pedido> Listar()
+        public IList<ItemPedido> Listar()
         {
             using (var contexto = new RestauranteContext())
             {
 
-                return contexto.Pedido.Include(Pedido => Pedido.Itens).ToList();
+                return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).ToList();
             }
 
         }
 
-        public void Atualizar(Pedido pedido)
+        public void Atualizar(ItemPedido pedido)
         {
 
             using (var contexto = new RestauranteContext())
             {
-                contexto.Pedido.Update(pedido);
+                contexto.ItensPedido.Update(pedido);
                 contexto.SaveChanges();
             }
         }
 
-        public void Excluir(Pedido pedido)
+        public void Excluir(ItemPedido pedido)
         {
             using (var contexto = new RestauranteContext())
             {
-                contexto.Pedido.Remove(pedido);
+                contexto.ItensPedido.Remove(pedido);
                 contexto.SaveChanges();
 
             }
         }
 
-        public Pedido BuscaPorId(int id)
+        public ItemPedido BuscaPorId(int id)
         {
             using (var contexto = new RestauranteContext())
             {
-                return contexto.Pedido.Find(id);
+                return contexto.ItensPedido.Find(id);
             }
         }
 

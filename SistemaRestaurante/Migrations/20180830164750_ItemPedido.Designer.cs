@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaRestaurante;
 
 namespace SistemaRestaurante.Migrations
 {
     [DbContext(typeof(RestauranteContext))]
-    partial class RestauranteContextModelSnapshot : ModelSnapshot
+    [Migration("20180830164750_ItemPedido")]
+    partial class ItemPedido
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace SistemaRestaurante.Migrations
 
             modelBuilder.Entity("SistemaRestaurante.Models.Cartao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CartaoId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,14 +31,14 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<int>("NumeroCartao");
 
-                    b.HasKey("Id");
+                    b.HasKey("CartaoId");
 
                     b.ToTable("Cartoes");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Comanda", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ComandaId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -44,14 +46,14 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<string>("Numero");
 
-                    b.HasKey("Id");
+                    b.HasKey("ComandaId");
 
                     b.ToTable("Comandas");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.ItemPedido", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ItemPedidoId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -63,7 +65,7 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<int?>("ProdutoId");
 
-                    b.HasKey("Id");
+                    b.HasKey("ItemPedidoId");
 
                     b.HasIndex("PedidoId");
 
@@ -87,7 +89,7 @@ namespace SistemaRestaurante.Migrations
 
             modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PedidoId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -99,7 +101,7 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<double>("ValorTotal");
 
-                    b.HasKey("Id");
+                    b.HasKey("PedidoId");
 
                     b.HasIndex("ComandaId")
                         .IsUnique();
@@ -109,7 +111,7 @@ namespace SistemaRestaurante.Migrations
 
             modelBuilder.Entity("SistemaRestaurante.Models.Produto", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProdutoId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -121,18 +123,18 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<double>("Preco");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProdutoId");
 
                     b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UsuarioId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Cargo");
+                    b.Property<string>("Cargo");
 
                     b.Property<string>("Login");
 
@@ -140,7 +142,7 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<string>("Senha");
 
-                    b.HasKey("Id");
+                    b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
                 });

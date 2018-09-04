@@ -8,10 +8,10 @@ namespace SistemaRestaurante.Models
     public class Comanda
     {
 
-        public int ComandaId { get; set; }
+        public int Id { get; set; }
         public string Numero { get; set; }
-        public double ValorTotal { get; set; }
-        public MesaComanda Mesa { get; set; }
+        public Pedido Pedido { get; set; }
+        public int MesaId { get; set; }
 
     }
 }
