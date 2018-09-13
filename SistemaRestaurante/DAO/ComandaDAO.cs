@@ -26,6 +26,16 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public IList<Comanda> Listar()
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Comandas.ToList();
+            }
+        }
+
+
+
         public void Atualizar(Comanda comanda)
         {
             using (var contexto = new RestauranteContext())

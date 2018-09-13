@@ -50,6 +50,15 @@ namespace SistemaRestaurante.Controllers
             Session.Abandon(); 
             return RedirectToAction("Index");
         }
+
+        //[Route("Cadastra", Name = "Cadastra")]
+        //public ActionResult Cadastra(String Cargo,String Usuario,String Senha)
+        //{
+        //    UsuarioDAO dao = new UsuarioDAO();
+            
+
+        //}
+
     }
 
 }

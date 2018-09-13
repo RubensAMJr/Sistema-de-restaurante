@@ -20,6 +20,8 @@
     <!-- Page level plugin CSS-->
     <link href="~/Content/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/hover.css" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
@@ -66,35 +68,35 @@
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewMesa")">
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewMesa")">
 
-                    <i class="fas fa-utensils"></i>
+                    <i class="fas fa-utensils hvr-icon"></i>
 
                     <span>Mesas</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewCozinha")">
-                    <i class="fas fa-cookie"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewCozinha")">
+                    <i class="fas fa-cookie hvr-icon"></i>
                     <span>Cozinha</span>
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="@Url.RouteUrl("ViewCaixa")">
-                    <i class="fas fa-dollar-sign"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewCaixa")">
+                    <i class="fas fa-dollar-sign hvr-icon"></i>
                     <span>Caixa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewProdutos")">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewProdutos")">
+                    <i class="fas fa-fw fa-table hvr-icon"></i>
                     <span>Lista de Produtos</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("TelaRegistro")">
-                    <i class="fas fa-users"></i>
-                    <span>Registrar novo Usuário</span>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRegistros")">
+                    <i class="fas fa-archive hvr-icon"></i>
+                    <span>Registros</span>
                 </a>
             </li>
         </ul>

@@ -16,9 +16,12 @@ namespace SistemaRestaurante.Controllers
         public ActionResult Index()
         {
             ProdutoDAO dao = new ProdutoDAO();
+
             IList<Produto> lista = dao.Listar();
+            
             ViewBag.Produtos = lista;
-            return View(ViewBag);
+            
+            return View();
         }
     }
 }

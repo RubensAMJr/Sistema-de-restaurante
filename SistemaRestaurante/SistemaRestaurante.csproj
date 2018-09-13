@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSS\buttons.dataTables.min.css" />
+    <Content Include="Content\CSS\hover.css" />
     <Content Include="Content\CSS\Main.css" />
     <Content Include="Content\CSS\reset.css" />
     <Content Include="Content\CSS\sb-admin.css" />
@@ -1555,8 +1556,11 @@
     <Compile Include="Controllers\CaixaController.cs" />
     <Compile Include="Controllers\CozinhaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoginController.cs">
+      <BrowseToURL>/Login</BrowseToURL>
+    </Compile>
     <Compile Include="Controllers\ProdutosController.cs" />
+    <Compile Include="Controllers\RegistroController.cs" />
     <Compile Include="DAO\ComandaDAO.cs" />
     <Compile Include="DAO\MesasDAO.cs" />
     <Compile Include="DAO\ItemPedidoDAO.cs" />
@@ -1614,6 +1618,14 @@
     <Compile Include="Migrations\20180830192527_enum.cs" />
     <Compile Include="Migrations\20180830192527_enum.designer.cs">
       <DependentUpon>20180830192527_enum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180904194112_NumeroPedido.cs" />
+    <Compile Include="Migrations\20180904194112_NumeroPedido.designer.cs">
+      <DependentUpon>20180904194112_NumeroPedido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180904194857_NumeroPedido2.cs" />
+    <Compile Include="Migrations\20180904194857_NumeroPedido2.designer.cs">
+      <DependentUpon>20180904194857_NumeroPedido2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
@@ -1695,6 +1707,7 @@
     <Content Include="Views\Produtos\Index.cshtml" />
     <Content Include="Views\Caixa\Index.cshtml" />
     <Content Include="Views\Cozinha\Index.cshtml" />
+    <Content Include="Views\Registro\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -20,6 +20,8 @@
     <!-- Page level plugin CSS-->
     <link href="~/Content/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/hover.css" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
@@ -61,35 +63,35 @@
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="@Url.RouteUrl("ViewMesa")">
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewMesa")">
 
-                    <i class="fas fa-utensils"></i>
+                    <i class="fas fa-utensils hvr-icon"></i>
 
                     <span>Mesas</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewCozinha")">
-                    <i class="fas fa-cookie"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewCozinha")">
+                    <i class="fas fa-cookie hvr-icon"></i>
                     <span>Cozinha</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewCaixa")">
-                    <i class="fas fa-dollar-sign"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewCaixa")">
+                    <i class="fas fa-dollar-sign hvr-icon"></i>
                     <span>Caixa</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("ViewProdutos")">
-                    <i class="fas fa-fw fa-table"></i>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewProdutos")">
+                    <i class="fas fa-fw fa-table hvr-icon"></i>
                     <span>Lista de Produtos</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="@Url.RouteUrl("TelaRegistro")">
-                    <i class="fas fa-users"></i>
-                    <span>Registrar novo Usuário</span>
+                <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRegistros")">
+                    <i class="fas fa-archive hvr-icon"></i>
+                    <span>Registros</span>
                 </a>
             </li>
         </ul>
@@ -99,16 +101,7 @@
             <div class="container-fluid">
 
                 <!-- Breadcrumbs-->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#ModalAdicionar">Adicionar Mesa</button>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#ModalRemover">Remover Mesa</button>
-                    </li>
-
-
-                </ol>
+                
 
                 <!--MESAS-->
 
@@ -116,13 +109,13 @@
                 @foreach (var mesas in ViewBag.Mesas)
                 {
                     
-                    <a data-toggle="modal" data-target="#myModal" href="#">
+                    <a class="hvr-float" data-toggle="modal" data-target="#myModal" href="#">
 
-                        <canvas id="@mesas.Numero" width="200" height="100" style="border:2px solid #000000;">
+                        <canvas id="@mesas.MesaId" width="200" height="100" style="border:2px solid #000000;">
                             Your browser does not support the HTML5 canvas tag.
                         </canvas>
                         <script>
-                        var c = document.getElementById("@mesas.Numero");
+                        var c = document.getElementById("@mesas.MesaId");
                         var ctx = c.getContext("2d");
                             
                         //Define a cor
