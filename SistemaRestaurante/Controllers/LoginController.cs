@@ -19,7 +19,7 @@ namespace SistemaRestaurante.Controllers
         }
 
         [Route("Registra",Name ="TelaRegistro")]
-        [AutorizacacoFilter]
+        [AutorizacacoFilter()]
         public ActionResult Registrar()
         {
 
