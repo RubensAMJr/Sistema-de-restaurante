@@ -45,8 +45,7 @@
                         <i class="fas fa-user-circle fa-fw"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">Settings</a>
-                        <a class="dropdown-item" href="#">Activity Log</a>
+
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
                     </div>
@@ -150,6 +149,22 @@
                             </a>
                         </div>
                     </div>
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card text-white bg-danger o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="fas fa-id-card"></i>
+                                </div>
+                                <div class="mr-5">Cartões</div>
+                            </div>
+                            <a class="card-footer text-white clearfix small z-1 hvr-underline-from-left" data-toggle="modal" data-target="#ModalCartoes" href="#">
+                                <span class="float-left">Gerenciar</span>
+                                <span class="float-right">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 <!-- Modals-->
                 <div id="ModalMesas" class="modal fade" role="dialog">
@@ -190,6 +205,10 @@
                                                 }
                                             </tbody>
                                         </table>
+                                        <div class="alert alert-success sucesso-mesa" role="alert">
+                                        </div>
+                                        <div class="alert alert-danger falha-mesa" role="alert">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -207,10 +226,10 @@
                                 <h4 class="modal-title">Gerenciar Usuarios</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
-                            
+                            <form action="@Url.RouteUrl("TelaRegistro")">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <button class="btn btn-sm btn-success btnUsuario" onclick="@Url.RouteUrl("TelaRegistro")">Registrar novo Usuário</button>
+                                        <button class="btn btn-sm btn-success btnUsuario">Registrar novo Usuário</button>
                                     </div>
                                     <div class="form-group table-responsive">
                                         <h3>Lista De Usuarios</h3>
@@ -227,27 +246,33 @@
                                             <tbody>
                                                 @foreach (var user in ViewBag.Usuarios)
                                                 {
-                                                    <tr>
+                                                    <tr id="@user.Nome">
                                                         <td>@user.Nome</td>
                                                         <td>@user.Login</td>
                                                         <td>@user.Senha</td>
                                                         <td>@user.Cargo</td>
-                                                        <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeUsuario(@user.Nome)">Remover</button></td>
+                                                        @if (!user.Cargo.Equals("GERENTE"))
+                                                        {
+                                                            <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeUsuario('@user.Nome')">Remover</button></td>
+                                                        }
                                                     </tr>
                                                 }
                                             </tbody>
 
                                         </table>
+
                                         <div class="alert alert-success sucesso" role="alert">
                                         </div>
                                         <div class="alert alert-danger falha" role="alert">
                                         </div>
                                     </div>
+
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                </div>
-                           
+                            </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -266,8 +291,8 @@
                                         <input type="number" step="1" name="numeroComanda" id="numeroComanda" class="form-control" autofocus="autofocus" min="1" placeholder="0" required="required" />
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-sm btn-success btnAdicionar">Adicionar</button>
-
+                                        <button class="btn btn-sm btn-success btnAdicionar" onclick="adicionaComanda()">Adicionar</button>
+                                        <p id="mensagem-erro-comanda"></p>
                                     </div>
                                     <h3>Lista de comandas</h3>
                                     <div class="form-group table-responsive">
@@ -276,19 +301,24 @@
                                                 <tr>
                                                     <th style="width:10%">Id</th>
                                                     <th style="width:90%">Numero da Comanda</th>
+                                                    <th style="width:90%">Remover</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="tabela-Comanda">
                                                 @foreach (var comanda in ViewBag.Comandas)
                                                 {
-                                                    <tr>
+                                                    <tr id="@comanda.Numero">
                                                         <td>@comanda.Id</td>
                                                         <td>@comanda.Numero</td>
-                                                        <td><button class="btn btn-sm btn-danger btnRemover">Remover</button></td>
+                                                        <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeComanda(@comanda.Numero)">Remover</button></td>
                                                     </tr>
                                                 }
                                             </tbody>
                                         </table>
+                                        <div class="alert alert-success sucesso-comanda" role="alert">
+                                        </div>
+                                        <div class="alert alert-danger falha-comanda" role="alert">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -298,7 +328,63 @@
                         </div>
                     </div>
                 </div>
-                
+                <div id="ModalCartoes" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Gerenciar Cartões</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form action="AdicionaCartao">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="nomeCliente">Nome do cliente:</label>
+                                        <input type="text" name="nomeCliente" id="nomeCliente" class="form-control" autofocus="autofocus" placeholder="Nome" required="required" />
+                                        <label for="numeroCartao">Numero do Cartão:</label>
+                                        <input type="number" name="numeroCartao" id="numeroCartao" class="form-control" autofocus="autofocus" min="1" maxlength="6" placeholder="000000" required="required" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-sm btn-success btnAdicionar" onclick="adicionaCartao()">Adicionar novo Cartão</button>
+                                        <p id="mensagem-erro-cartao"></p>
+                                    </div>
+                                    <h3>Lista de cartões</h3>
+                                    <div class="form-group table-responsive">
+                                        <table class="table table-hover table-responsive table-bordered" style="overflow-y:auto; height:200px;">
+                                            <thead style="width:100%">
+                                                <tr>
+                                                    <th style="width:10%">Id</th>
+                                                    <th style="width:90%">Nome do cliente</th>
+                                                    <th style="width:90%">N. do cartão</th>
+                                                    <th>Remover</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tabela-Cartao">
+                                                @foreach (var cartao in ViewBag.Cartoes)
+                                                {
+                                                    <tr id="@cartao.NumeroCartao">
+                                                        <td>@cartao.Id</td>
+                                                        <td>@cartao.NomeCliente</td>
+                                                        <td>@cartao.NumeroCartao</td>
+                                                        <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeCartao(@cartao.NumeroCartao)">Remover</button></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div class="alert alert-success sucesso-cartao" role="alert">
+                                        </div>
+                                        <div class="alert alert-danger falha-cartao" role="alert">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Area Chart Example-->
                 <!-- /.container-fluid -->
@@ -311,8 +397,8 @@
                     </div>
                 </footer>
             </div>
-                    <!-- /.content-wrapper -->
-                </div>
+            <!-- /.content-wrapper -->
+        </div>
         <!-- /#wrapper -->
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
@@ -357,38 +443,12 @@
     <!-- Demo scripts for this page-->
     <script src="~/Content/js/demo/datatables-demo.js"></script>
     <script src="~/Content/js/demo/chart-area-demo.js"></script>
+
+
     <script src="~/Content/js/gerenciaMesas.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $(".sucesso").toggle();
-            $(".falha").toggle();
-        });
-
-        function removeUsuario(Nome) {
-            event.preventDefault();
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: 'RemoveUsuario',
-                    data: {
-                        Nome
-                    },
-                    cache: false,
-                    async: true,
-                    success: function (data) {
-                        if (data.success == true) {
-                            $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
-                            setTimeout(function () {
-                                $(".sucesso").text(data.resposta).toggle();
-                            }, 7000)
-                        } else {
-                            $(".falha").text(data.resposta).toggle().fadeOut(6000);
-                        }
-                    }
-                });
-        }
-    </script>
+    <script src="~/Content/js/gerenciaUsuarios.js"></script>
+    <script src="~/Content/js/gerenciaComandas.js"></script>
+    <script src="~/Content/js/gerenciaCartoes.js"></script>
     
 
 </body>

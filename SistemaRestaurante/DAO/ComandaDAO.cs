@@ -46,13 +46,12 @@ namespace SistemaRestaurante.DAO
             }
         }
 
-        public void Excluir(Comanda comanda)
+        public void Excluir(int numeroComanda)
         {
             using (var contexto = new RestauranteContext())
             {
-                contexto.Comandas.Remove(comanda);
+                contexto.Comandas.Remove(contexto.Comandas.FirstOrDefault(c => c.Numero == numeroComanda));
                 contexto.SaveChanges();
-
             }
         }
 
@@ -61,6 +60,14 @@ namespace SistemaRestaurante.DAO
             using (var contexto = new RestauranteContext())
             {
                 return contexto.Comandas.Find(id);
+            }
+        }
+
+        public Comanda BuscaPorNumero(int numeroComanda)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Comandas.FirstOrDefault(c => c.Numero == numeroComanda);
             }
         }
     }

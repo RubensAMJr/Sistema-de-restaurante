@@ -72,6 +72,7 @@ namespace SistemaRestaurante.Controllers
         [Route("RemoveUsuario")]
         public ActionResult Remove(string Nome)
         {
+
             UsuarioDAO dao = new UsuarioDAO();
             if (dao.BuscaPorNome(Nome) != null)
             {

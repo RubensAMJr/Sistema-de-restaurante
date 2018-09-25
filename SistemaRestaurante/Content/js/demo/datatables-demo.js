@@ -6,7 +6,24 @@ $(document).ready(function () {
 
             buttons: [
                 {
-                    /*extend: "selecteSingle",*/ text: 'Adicionar',
+                    text: 'Adicionar',
+                    attr: {
+                        id: 'botaoAdicionar'
+                    }
+                },
+                {
+                    text: 'Editar',
+                    attr: {
+                        id: 'botaoEditar'
+                    }
+                },
+                {
+                    text: 'Deletar',
+                    attr: {
+                        id: 'botaoDeletar',
+                        onclick: 'removeProduto()'
+                        
+                    }
                 }
 
             ],
@@ -29,4 +46,6 @@ $(document).ready(function () {
             }
         }
     );
+    
+    
 });

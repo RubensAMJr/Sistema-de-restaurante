@@ -9,9 +9,13 @@ namespace SistemaRestaurante.Models
     {
 
         public int Id { get; set; }
-        public string Numero { get; set; }
+        public int Numero { get; set; }
         public Pedido Pedido { get; set; }
-        public int MesaId { get; set; }
+        public int? MesaId { get; set; }
 
+        public Comanda(int numero)
+        {
+            Numero = numero;
+        }
     }
 }

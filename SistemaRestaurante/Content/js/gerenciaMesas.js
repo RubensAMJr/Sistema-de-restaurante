@@ -1,4 +1,8 @@
-﻿
+﻿$(document).ready(function () {
+    $(".sucesso-mesa").toggle();
+    $(".falha-mesa").toggle();
+});
+
 function removeMesa(numeroMesa) {
     event.preventDefault();
     $.ajax(
@@ -12,10 +16,11 @@ function removeMesa(numeroMesa) {
             async: true,
             success: function () {
                 $("#" + numeroMesa).remove();
+                $(".sucesso-mesa").text("Mesa removida com sucesso").toggle().fadeOut(6000);
+
             }
         });
 }
-
 function adicionaMesa() {
     event.preventDefault();
     var numeroMesa = $("#numeroMesa").val();
@@ -43,14 +48,11 @@ function adicionaMesa() {
                     linha.append(colunaNumero);
                     linha.append(colunaBotao);
                     $(".tabela-Mesa").append(linha);
+
+                    $(".sucesso-mesa").text("Mesa adicionada com sucesso").toggle().fadeOut(6000);
                     
                 } else {
-                    $("#mensagem-erro").text(data.resposta).fadeOut(7000).css("color", "red");
-                    setTimeout(function () {
-                        $("#mensagem-erro").text(data.resposta).remove();
-                    }, 7000)
-                   
-                    
+                    $(".falha-mesa").text(data.resposta).toggle().fadeOut(6000);
                 }
             },
             error: function (data) {

@@ -185,7 +185,10 @@
     <Content Include="Content\js\demo\chart-bar-demo.js" />
     <Content Include="Content\js\demo\chart-pie-demo.js" />
     <Content Include="Content\js\demo\datatables-demo.js" />
+    <Content Include="Content\js\gerenciaCartoes.js" />
+    <Content Include="Content\js\gerenciaComandas.js" />
     <Content Include="Content\js\gerenciaMesas.js" />
+    <Content Include="Content\js\gerenciaUsuarios.js" />
     <Content Include="Content\js\sb-admin.js" />
     <Content Include="Content\js\sb-admin.min.js" />
     <Content Include="Content\js\select.dataTables.min.js" />
@@ -1562,6 +1565,7 @@
     </Compile>
     <Compile Include="Controllers\ProdutosController.cs" />
     <Compile Include="Controllers\RegistroController.cs" />
+    <Compile Include="DAO\CartaoDAO.cs" />
     <Compile Include="DAO\ComandaDAO.cs" />
     <Compile Include="DAO\MesasDAO.cs" />
     <Compile Include="DAO\ItemPedidoDAO.cs" />

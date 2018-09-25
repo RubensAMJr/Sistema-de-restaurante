@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SistemaRestaurante.DAO
 {
-    public class ProdutoDAO 
+    public class ProdutoDAO
     {
 
         public void Adiciona(Produto produto)
@@ -22,9 +22,9 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                
+
                 return contexto.Produtos.ToList();
-                
+
 
             }
         }
@@ -44,7 +44,7 @@ namespace SistemaRestaurante.DAO
             {
                 contexto.Produtos.Remove(produto);
                 contexto.SaveChanges();
-                
+
             }
         }
 
@@ -56,12 +56,24 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public Produto BuscaPorNome(string nomeProduto)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Produtos.FirstOrDefault(p => p.Nome == nomeProduto);
+            }
+        }
+
+        public void Excluir(string nomeProduto)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                contexto.Produtos.Remove(contexto.Produtos.FirstOrDefault(p => p.Nome == nomeProduto));
+                contexto.SaveChanges();
 
 
-
-
-
-
+            }
+        }
 
 
     }
