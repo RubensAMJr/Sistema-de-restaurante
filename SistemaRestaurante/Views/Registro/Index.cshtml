@@ -167,8 +167,8 @@
                                         <input type="number" step="1" name="numeroMesa" id="numeroMesa" class="form-control" autofocus="autofocus" min="1" placeholder="0" required="required" />
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-sm btn-success btnAdicionar">Adicionar</button>
-                                        
+                                        <button class="btn btn-sm btn-success btnAdicionar" onclick="adicionaMesa()">Adicionar</button>
+                                        <p id="mensagem-erro"></p>
                                     </div>
                                     <h3>Lista de mesas</h3>
                                     <div class="form-group table-responsive">
@@ -179,13 +179,13 @@
                                                     <th style="width:90%">Numero</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="tabela-Mesa">
                                                 @foreach (var mesa in ViewBag.Mesas)
                                                 {
-                                                    <tr>
+                                                    <tr id="@mesa.Numero">
                                                         <td>@mesa.MesaId</td>
                                                         <td>@mesa.Numero</td>
-                                                        <td><button class="btn btn-sm btn-danger  btnRemover">Remover</button></td>
+                                                        <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeMesa(@mesa.Numero)">Remover</button></td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -207,10 +207,10 @@
                                 <h4 class="modal-title">Gerenciar Usuarios</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
-                            <form action="@Url.RouteUrl("TelaRegistro")">
+                            
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <button class="btn btn-sm btn-success btnUsuario">Registrar novo Usuário</button>
+                                        <button class="btn btn-sm btn-success btnUsuario" onclick="@Url.RouteUrl("TelaRegistro")">Registrar novo Usuário</button>
                                     </div>
                                     <div class="form-group table-responsive">
                                         <h3>Lista De Usuarios</h3>
@@ -221,6 +221,7 @@
                                                     <th style="width:25%">Login</th>
                                                     <th style="width:25%">Senha</th>
                                                     <th style="width:25%">Cargo</th>
+                                                    <th style="width:25%">Remover</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -231,18 +232,22 @@
                                                         <td>@user.Login</td>
                                                         <td>@user.Senha</td>
                                                         <td>@user.Cargo</td>
-
+                                                        <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeUsuario(@user.Nome)">Remover</button></td>
                                                     </tr>
                                                 }
                                             </tbody>
 
                                         </table>
+                                        <div class="alert alert-success sucesso" role="alert">
+                                        </div>
+                                        <div class="alert alert-danger falha" role="alert">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                                 </div>
-                            </form>
+                           
                         </div>
                     </div>
                 </div>
@@ -257,14 +262,14 @@
                             <form action="AdicionaMesa">
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="numeroMesa">Numero da Mesa:</label>
-                                        <input type="number" step="1" name="numeroMesa" id="numeroMesa" class="form-control" autofocus="autofocus" min="1" placeholder="0" required="required" />
+                                        <label for="numeroComanda">Numero da Comanda:</label>
+                                        <input type="number" step="1" name="numeroComanda" id="numeroComanda" class="form-control" autofocus="autofocus" min="1" placeholder="0" required="required" />
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-sm btn-success btnAdicionar">Adicionar</button>
 
                                     </div>
-                                    <h3>Lista de mesas</h3>
+                                    <h3>Lista de comandas</h3>
                                     <div class="form-group table-responsive">
                                         <table class="table table-hover table-responsive table-bordered" style="overflow-y:auto; height:200px;">
                                             <thead style="width:100%">
@@ -279,7 +284,7 @@
                                                     <tr>
                                                         <td>@comanda.Id</td>
                                                         <td>@comanda.Numero</td>
-                                                        <td><button class="btn btn-sm btn-danger  btnRemover">Remover</button></td>
+                                                        <td><button class="btn btn-sm btn-danger btnRemover">Remover</button></td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -293,6 +298,7 @@
                         </div>
                     </div>
                 </div>
+                
 
                 <!-- Area Chart Example-->
                 <!-- /.container-fluid -->
@@ -351,6 +357,39 @@
     <!-- Demo scripts for this page-->
     <script src="~/Content/js/demo/datatables-demo.js"></script>
     <script src="~/Content/js/demo/chart-area-demo.js"></script>
+    <script src="~/Content/js/gerenciaMesas.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".sucesso").toggle();
+            $(".falha").toggle();
+        });
+
+        function removeUsuario(Nome) {
+            event.preventDefault();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'RemoveUsuario',
+                    data: {
+                        Nome
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        if (data.success == true) {
+                            $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
+                            setTimeout(function () {
+                                $(".sucesso").text(data.resposta).toggle();
+                            }, 7000)
+                        } else {
+                            $(".falha").text(data.resposta).toggle().fadeOut(6000);
+                        }
+                    }
+                });
+        }
+    </script>
+    
 
 </body>
 

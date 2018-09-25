@@ -33,6 +33,7 @@
                             <option value="GERENTE">Gerente</option>
                             <option value="GARCOM">Garçom</option>
                             <option value="CAIXA">Caixa</option>
+                            <option value="ADMINISTRADOR">Administrador</option>
                         </select>
 
                     </div>
@@ -64,8 +65,17 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                    <button type="submit" class="btn btn-primary btn-block" onclick="adicionaUsuario()">Cadastrar</button>
+                    <div class="alert alert-success sucesso" role="alert">
+                    </div>
+                    <div class="alert alert-danger falha" role="alert">
+                    </div>
                 </form>
+                <div class="row ">
+                    <div class="col text-center">
+                        <a class=" " href="@Url.RouteUrl("ViewRegistros")">Voltar para Registros</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -76,6 +86,11 @@
     <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <script language='javascript' type='text/javascript'>
+        $(document).ready(function () {
+            $(".sucesso").toggle();
+            $(".falha").toggle();
+        });
+
         function check(input) {
             if (input.value != document.getElementById('Senha').value) {
                 input.setCustomValidity('Senhas são diferentes');
@@ -83,6 +98,36 @@
                 // input is valid -- reset the error message
                 input.setCustomValidity('');
             }
+        }
+
+        function adicionaUsuario() {
+
+            event.preventDefault();
+            var cargo = $("#cargo").val();
+            var nome = $("#Nome").val();
+            var usuario = $("#Usuario").val();
+            var senha = $("#Senha").val();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'NovoUsuario',
+                    data: {
+                        cargo,nome,usuario,senha
+                    },
+                    cache: false,
+                    async: true,
+                    success: function(data) {
+                        if (data.sucess == true) {
+                            $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
+                            setTimeout(function () {
+                                $(".sucesso").text(data.resposta).toggle();
+                            }, 7000)
+                        } else {
+                            $(".falha").text(data.resposta).toggle().fadeOut(6000);
+                            
+                        }
+                    }
+                });
         }
     </script>
 

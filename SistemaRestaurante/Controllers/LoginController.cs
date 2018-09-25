@@ -51,14 +51,38 @@ namespace SistemaRestaurante.Controllers
             return RedirectToAction("Index");
         }
 
-        //[Route("Cadastra", Name = "Cadastra")]
-        //public ActionResult Cadastra(String Cargo,String Usuario,String Senha)
-        //{
-        //    UsuarioDAO dao = new UsuarioDAO();
-            
+        [Route("NovoUsuario")]
+        public ActionResult NovoUsuario(string cargo,string nome,string usuario,string senha)
+        {
+            UsuarioDAO dao = new UsuarioDAO();
+            Usuario user = dao.Busca(usuario, senha);
+            if (user == null)
+            {
+                user = new Usuario(cargo,nome,usuario,senha);
+                dao.Adiciona(user);
+                return Json(new { sucess = true, resposta = "Usuario cadastrado com sucesso"},JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { sucess = false, resposta = "Usuario já existe" }, JsonRequestBehavior.AllowGet);
+            }
 
-        //}
+        }
 
+        [Route("RemoveUsuario")]
+        public ActionResult Remove(string Nome)
+        {
+            UsuarioDAO dao = new UsuarioDAO();
+            if (dao.BuscaPorNome(Nome) != null)
+            {
+                dao.ExcluirPorNome(Nome);
+                return Json(new { success = true , resposta = "Usuario removido com sucesso"});
+            }
+            else
+            {
+                return Json(new { success = false, resposta = "Erro ao remover usuario" });
+            }
+        }
     }
 
 }

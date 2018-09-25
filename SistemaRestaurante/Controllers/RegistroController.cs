@@ -28,38 +28,24 @@ namespace SistemaRestaurante.Controllers
         public ActionResult AdicionaMesa(int numeroMesa)
         {
             MesasDAO dao = new MesasDAO();
-            if (dao.BuscaPorNumero(numeroMesa) != null)
+            if(dao.BuscaPorNumero(numeroMesa) != null)
             {
-                ModelState.AddModelError("mesaJaExiste", "Mesa com esse numero já existe");
-            }
-            if (ModelState.IsValid)
-            {
-                dao.Adiciona(new Mesa(numeroMesa));
-                return RedirectToRoute("ViewRegistros");
+                return Json(new { success = false, resposta = "Mesa Já existe" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return RedirectToRoute("ViewRegistros");
+            dao.Adiciona(new Mesa(numeroMesa));
+            return Json(new { success = true , Mesa = dao.BuscaPorNumero(numeroMesa) }, JsonRequestBehavior.AllowGet);
             }
+
         }
 
         [Route("RemoveMesa")]
         public ActionResult RemoverMesa(int numeroMesa)
         {
             MesasDAO dao = new MesasDAO();
-            if (dao.BuscaPorNumero(numeroMesa) == null)
-            {
-                ModelState.AddModelError("mesaNaoExiste", "Mesa com esse numero não existe");
-            }
-            if (ModelState.IsValid)
-            {
-                dao.Excluir(numeroMesa);
-                return RedirectToRoute("ViewRegistros");
-            }
-            else
-            {
-                return RedirectToRoute("ViewRegistros");
-            }
+            dao.Excluir(numeroMesa);
+            return Json(numeroMesa);
         }
 
 

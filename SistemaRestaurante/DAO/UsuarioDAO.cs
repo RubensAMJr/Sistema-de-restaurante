@@ -49,11 +49,29 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public void ExcluirPorNome(string nome)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                contexto.Usuarios.Remove(contexto.Usuarios.FirstOrDefault(u => u.Nome == nome));
+                contexto.SaveChanges();
+
+            }
+        }
+
         public Usuario BuscaPorId(int id)
         {
             using (var contexto = new RestauranteContext())
             {
                 return contexto.Usuarios.Find(id);
+            }
+        }
+
+        public Usuario BuscaPorNome(string nome)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Usuarios.FirstOrDefault(u => u.Nome == nome);
             }
         }
 
