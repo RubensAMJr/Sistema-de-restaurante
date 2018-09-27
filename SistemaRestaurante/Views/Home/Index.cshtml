@@ -172,10 +172,30 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="comandas">Comandas Dessa Mesa:</label>
-                                        <select id="comandas" name="comandas" class="form-control-sm">
-                                        </select>
-                                        <button id="btnPedido" class="btn btn-success">Adicionar Pedido</button>
+                                        <select id="comandas" name="comandas" class="form-control-sm"></select>
+                                        @if (user.Cargo.Equals("GERENTE"))
+                                        {
+                                            <button class="btn btn-danger ml-2" onclick="excluiComanda()">Remover Comanda</button>
+                                        }
                                     </div>
+                                    <div class="form-group">
+                                        <table class="table table-hover table-responsive table-bordered" style="overflow-y:auto; height:200px;">
+                                            <thead style="width:200%">
+                                                <tr>
+                                                    <th style="width:45%">Produto</th>
+                                                    <th style="width:45%">Observação</th>
+                                                    <th style="width:10%">Entregue</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="form-group">
+                                        <span>Valor total: </span>
+                                    </div>
+                                    <button id="btnPedido" class="btn btn-success" onclick="addPedido()">Adicionar Pedido</button>
                                 </form>
                                 <p id="erro"></p>
                             </div>
@@ -185,9 +205,29 @@
                         </div>
                     </div>
                 </div>
-
-
-
+                <div id="modalComanda" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title-comanda" id="tituloModal">Adicionar Pedido</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                        <label for="listaPedidos">Lista de pedidos: </label>
+                                    <div class="form-group">
+                                        <select style="height:100%;width:100%" size="4" id="listaPedidos" name="listaPedidos" class="form-control-sm mr-5"></select>
+                                    </div>
+                                </form>
+                                <p id="erro"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" data-dismiss="modal" disabled>Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Area Chart Example-->
                 <!-- /.container-fluid -->
                 <!-- Sticky Footer -->
@@ -211,7 +251,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Sair?</h5>
+                        <h5 class="modal-title-Logout" id="exampleModalLabel">Sair?</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -250,12 +290,14 @@
         $(document).ready(function () {
             $('#modalMesa').on('hidden.bs.modal', function () {
                 var linhas = $("#comandas").children();
+                var linhasTotal = $("#comandasTotal").children();
                 linhas.remove();
+                linhasTotal.remove();
             })
         });
 
         function abreModal(nmrMesa, mesaId) {
-            $("#tituloModal").text("Mesa " + nmrMesa);
+            $(".modal-title").text("Mesa " + nmrMesa).attr("id", mesaId);
             $.ajax(
                 {
                     type: 'GET',
@@ -269,52 +311,87 @@
                         var comandasTotal = data.ComandasTotal;
                         var listaTotal = $("#comandasTotal");
                         $(comandasTotal).each(function (index) {
-                            var itemLista = $("<option>").text(comandasTotal[index].Numero).attr("id", comandasTotal[index].Id);
+                            var itemLista = $("<option>").text(comandasTotal[index].Numero).attr("value", comandasTotal[index].Id);
                             listaTotal.append(itemLista);
                         });
                         if (data.success == true) {
                             $("#erro").text("");
                             var comandas = data.Comandas;
-                            
                             var lista = $("#comandas");
                             $(comandas).each(function (index) {
-                                var itemLista = $("<option>").text(comandas[index].Numero).attr("id", comandas[index].Id);
+                                var itemLista = $("<option>").text(comandas[index].Numero).attr("value", comandas[index].Id);
                                 lista.append(itemLista);
                             });
                         } else {
                             $("#erro").text(data.resposta).css("color", "red");
                         }
+                        if ($("#comandas").children().length == 0) {
+                            $("#btnPedido").at;
+                        }
                     }
                 });
+            
             $("#modalMesa").modal();
         }
 
-        function adicionaComanda(comandaId,mesaId) {
+        function addComanda()
+        {
+            event.preventDefault();
             var userId = @user.Id;
+            var mesaId = $(".modal-title").attr("id");
+            var comandaId = $("#comandasTotal option:selected").val();
+           
             $.ajax(
                 {
-                    type: 'GET',
-                    url: 'AdicionaComanda',
+                    type: 'POST',
+                    url: 'AddComanda',
                     data: {
                         mesaId, comandaId, userId
+                    },
+                    success: function (data) {
+                        
+                        if (data.success == true) {
+                            var selecionado = $("#comandasTotal option:selected");
+                            $("#comandas").append(selecionado);
+                            $("#comandasTotal option:selected").remove();
+                            $("#erro").text(data.resposta).css("color", "green");
+                        } else {
+
+                        }
+                    }
+                });
+        }
+
+        function addPedido() {
+            event.preventDefault();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'BuscaProduto',
+                    data: {
                     },
                     cache: false,
                     async: true,
                     success: function (data) {
                         
                         if (data.success == true) {
-                            
+                            var produtos = data.Produtos;
+                            var lista = $("#listaPedidos");
+                            $(produtos).each(function (index) {
+                                var itemLista = $("<option>").text(produtos[index].Nome).attr("value", produtos[index].Id);
+                                if (produtos[index].EstaEmFalta) {
+                                    itemLista.css("color", "red");
+                                }
+                                lista.append(itemLista);
+                            });
                         } else {
-
                         }
                     }
                 });
+            $("#modalComanda").modal();
         }
+
         
-
-       
-
-
     </script>
 
 </body>

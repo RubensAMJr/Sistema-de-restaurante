@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaRestaurante;
 
 namespace SistemaRestaurante.Migrations
 {
     [DbContext(typeof(RestauranteContext))]
-    partial class RestauranteContextModelSnapshot : ModelSnapshot
+    [Migration("20180927181826_Corrigindo")]
+    partial class Corrigindo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,11 +46,7 @@ namespace SistemaRestaurante.Migrations
 
                     b.Property<int>("Numero");
 
-                    b.Property<int?>("PedidoId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PedidoId");
 
                     b.ToTable("Comandas");
                 });
@@ -95,6 +93,8 @@ namespace SistemaRestaurante.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ComandaId");
+
                     b.Property<DateTime>("Data");
 
                     b.Property<int>("Numero");
@@ -102,6 +102,9 @@ namespace SistemaRestaurante.Migrations
                     b.Property<double>("ValorTotal");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ComandaId")
+                        .IsUnique();
 
                     b.ToTable("Pedido");
                 });
@@ -144,13 +147,6 @@ namespace SistemaRestaurante.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("SistemaRestaurante.Models.Comanda", b =>
-                {
-                    b.HasOne("SistemaRestaurante.Models.Pedido", "Pedido")
-                        .WithMany()
-                        .HasForeignKey("PedidoId");
-                });
-
             modelBuilder.Entity("SistemaRestaurante.Models.ItemPedido", b =>
                 {
                     b.HasOne("SistemaRestaurante.Models.Pedido")
@@ -161,6 +157,14 @@ namespace SistemaRestaurante.Migrations
                     b.HasOne("SistemaRestaurante.Models.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId");
+                });
+
+            modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>
+                {
+                    b.HasOne("SistemaRestaurante.Models.Comanda")
+                        .WithOne("Pedido")
+                        .HasForeignKey("SistemaRestaurante.Models.Pedido", "ComandaId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

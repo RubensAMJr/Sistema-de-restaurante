@@ -47,7 +47,7 @@ namespace SistemaRestaurante.Controllers
             }
         }
 
-        [Route("AdicionaComanda")]
+        [Route("AddComanda")]
         public ActionResult Adiciona(int mesaId,int comandaId,int userId)
         {
             PedidoDAO daoPedido = new PedidoDAO();
@@ -59,10 +59,21 @@ namespace SistemaRestaurante.Controllers
             }
             else
             {
-                
-                return Json(new { success = false, resposta = "Comanda não existe" }, JsonRequestBehavior.AllowGet);
+                Pedido pedido = new Pedido();
+                comanda.MesaId = mesaId;
+                comanda.Pedido = pedido;
+                daoComanda.Atualizar(comanda);
+                return Json(new { success = true, resposta = "Comanda Acidionada com sucesso" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [Route("BuscaProduto")]
+        public ActionResult BuscaProduto()
+        {
+            ProdutoDAO dao = new ProdutoDAO();
+            return Json(new { success = true, Produtos = dao.Listar()});
+        }
+
     }
 
 

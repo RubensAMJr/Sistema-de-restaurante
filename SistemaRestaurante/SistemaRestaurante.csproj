@@ -1633,6 +1633,18 @@
     <Compile Include="Migrations\20180904194857_NumeroPedido2.designer.cs">
       <DependentUpon>20180904194857_NumeroPedido2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20180927175559_Correcao.cs" />
+    <Compile Include="Migrations\20180927175559_Correcao.designer.cs">
+      <DependentUpon>20180927175559_Correcao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180927181826_Corrigindo.cs" />
+    <Compile Include="Migrations\20180927181826_Corrigindo.designer.cs">
+      <DependentUpon>20180927181826_Corrigindo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180927183244_Corrigindo2.cs" />
+    <Compile Include="Migrations\20180927183244_Corrigindo2.designer.cs">
+      <DependentUpon>20180927183244_Corrigindo2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\Mesa.cs" />

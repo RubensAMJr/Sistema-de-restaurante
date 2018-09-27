@@ -13,8 +13,9 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                contexto.Pedido.Add(pedido);
-                contexto.SaveChanges();
+                    contexto.Pedido.Add(pedido);
+                    contexto.SaveChanges();
+                
             }
         }
 
