@@ -1,4 +1,5 @@
 ﻿using SistemaRestaurante.DAO;
+using SistemaRestaurante.Filters;
 using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Web.Mvc;
 
 namespace SistemaRestaurante.Controllers
 {
+
+    [AutorizacacoFilter]
     public class RegistroController : Controller
     {
         [Route("Registro", Name = "ViewRegistros")]
@@ -24,7 +27,15 @@ namespace SistemaRestaurante.Controllers
             ViewBag.Usuarios = userDao.Listar();
             ViewBag.Comandas = comandaDao.Listar().OrderBy(c => c.Numero).ToList();
             ViewBag.Cartoes = cartDAO.Listar().OrderBy(ca => ca.NumeroCartao).ToList();
-            return View();
+            Usuario user = (Usuario)Session["Admin"];
+            if (user.Cargo.Equals("GARCOM") || user.Cargo.Equals("GERENTE"))
+            {
+                return View(ViewBag);
+            }
+            else
+            {
+                return RedirectToRoute("Sair");
+            }
         }
 
         [Route("AdicionaMesa")]

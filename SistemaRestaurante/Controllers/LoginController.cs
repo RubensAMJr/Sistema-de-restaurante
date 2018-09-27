@@ -29,18 +29,31 @@ namespace SistemaRestaurante.Controllers
         [Route("Autentica")]
         public ActionResult Autentica(String usuario,String senha)
         {
-            
             UsuarioDAO dao = new UsuarioDAO();
             Usuario user = dao.Busca(usuario, senha);
             if (user != null)
             {
-                Session["Admin"] = usuario;
-                return RedirectToAction("Index", "Home");
+                Session["Admin"] = user;
+                if (user.Cargo.Equals("GARCOM"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }else if (user.Cargo.Equals("COZINHEIRO"))
+                {
+                    return RedirectToAction("Index", "Cozinha");
+                }
+                else if(user.Cargo.Equals("CAIXA"))
+                {
+                    return RedirectToAction("Index", "Caixa");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-           else
-           {
-                return RedirectToAction("Index");
-           }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         [Route("LogOut", Name = "Sair")]

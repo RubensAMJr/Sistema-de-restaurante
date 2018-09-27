@@ -12,17 +12,27 @@ $(document).ready(function () {
                     }
                 },
                 {
+                    extend: 'selectedSingle',
                     text: 'Editar',
                     attr: {
                         id: 'botaoEditar'
                     }
                 },
                 {
+                    extend: 'selectedSingle',
                     text: 'Deletar',
                     attr: {
                         id: 'botaoDeletar',
                         onclick: 'removeProduto()'
-                        
+
+                    }
+                },
+                {
+                    extend: 'selectedSingle',
+                    text: 'Alterar Falta',
+                    attr: {
+                        id: 'botaoAlterar',
+                        onclick: 'alteraFalta()'
                     }
                 }
 

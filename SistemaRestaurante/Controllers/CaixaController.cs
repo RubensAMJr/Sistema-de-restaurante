@@ -1,4 +1,5 @@
 ﻿using SistemaRestaurante.Filters;
+using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,15 @@ namespace SistemaRestaurante.Controllers
         [Route("Caixa", Name ="ViewCaixa")]
         public ActionResult Index()
         {
-            return View();
+            Usuario user = (Usuario)Session["Admin"];
+            if (user.Cargo.Equals("CAIXA") || user.Cargo.Equals("GERENTE"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToRoute("Sair");
+            }
         }
     }
 }

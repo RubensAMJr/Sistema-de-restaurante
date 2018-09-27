@@ -18,8 +18,15 @@ namespace SistemaRestaurante.Controllers
             ItemPedidoDAO dao = new ItemPedidoDAO();
             IList<ItemPedido> pedidos = dao.Listar(); 
             ViewBag.Pedidos = pedidos;
-            
-            return View(ViewBag);
+            Usuario user = (Usuario)Session["Admin"];
+            if (user.Cargo.Equals("COZINHEIRO") || user.Cargo.Equals("GERENTE"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToRoute("Sair");
+            }
         }
     }
 }

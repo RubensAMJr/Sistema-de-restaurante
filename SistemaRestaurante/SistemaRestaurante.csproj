@@ -188,6 +188,7 @@
     <Content Include="Content\js\gerenciaCartoes.js" />
     <Content Include="Content\js\gerenciaComandas.js" />
     <Content Include="Content\js\gerenciaMesas.js" />
+    <Content Include="Content\js\gerenciaProduto.js" />
     <Content Include="Content\js\gerenciaUsuarios.js" />
     <Content Include="Content\js\sb-admin.js" />
     <Content Include="Content\js\sb-admin.min.js" />

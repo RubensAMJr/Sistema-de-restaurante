@@ -26,6 +26,14 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public IList<Comanda> ListarSemMesa()
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Comandas.Where(c => c.MesaId == null).ToList();
+            }
+        }
+
         public IList<Comanda> Listar()
         {
             using (var contexto = new RestauranteContext())
