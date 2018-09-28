@@ -10,13 +10,8 @@ namespace SistemaRestaurante.Models
         public int Id { get; set; }
         public int Numero { get; set; }
         public int? ComandaId { get; set; }
-        public DateTime Data { get; set;}
         public double ValorTotal { get; set; }
         public IList<ItemPedido> Itens { get; set; }
-        public Pedido()
-        {
-            Numero = Id;
-            Data = DateTime.Now;
-        }
+        
     }
 }

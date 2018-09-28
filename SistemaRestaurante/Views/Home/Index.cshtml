@@ -173,7 +173,6 @@
                                     <div class="form-group">
                                         <label for="comandas">Comandas Dessa Mesa:</label>
                                         <select onchange="carregaDados()" id="comandas" name="comandas" class="form-control-sm">
-                                            <option id="optionInicial">Selecione a comanda</option>
                                         </select>
                                         @if (user.Cargo.Equals("GERENTE"))
                                         {
@@ -181,7 +180,7 @@
                                         }
                                     </div>
                                     <div class="form-group">
-                                        <table class="table table-hover table-responsive table-bordered" style="overflow-y:auto; height:200px;">
+                                        <table class="table table-hover table-responsive table-bordered"  style="overflow-y:auto; height:200px;">
                                             <thead style="width:200%">
                                                 <tr>
                                                     <th style="width:45%">Produto</th>
@@ -299,11 +298,17 @@
                 var linhasTotal = $("#comandasTotal").children();
                 linhas.remove();
                 linhasTotal.remove();
+                var tabela = $("#tabela-Itens").children();
+                tabela.remove();
+                var itemLista = $("<option>").text("Selecione a comanda").attr("id", "optionInicial");
+                $("comandas").append(itemLista);
+
             })
             $('#modalComanda').on('hidden.bs.modal', function () {
                 var linhas = $("#listaPedidos").children();
                 linhas.remove();
             })
+
         });
 
         function abreModal(nmrMesa, mesaId) {
@@ -327,7 +332,9 @@
                         if (data.success == true) {
                             $("#erro").text("");
                             var comandas = data.Comandas;
+                            var itemInicial = $("<option>").text("Selecione a comanda").attr("id", "optionInicial");
                             var lista = $("#comandas");
+                            lista.append(itemInicial);
                             $(comandas).each(function (index) {
                                 var itemLista = $("<option>").text(comandas[index].Numero).attr("value", comandas[index].Id);
                                 lista.append(itemLista);

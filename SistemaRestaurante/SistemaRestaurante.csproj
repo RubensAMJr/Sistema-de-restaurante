@@ -1649,6 +1649,10 @@
     <Compile Include="Migrations\20180928003808_Corrigindo3.designer.cs">
       <DependentUpon>20180928003808_Corrigindo3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20180928155214_Corrigindo4.cs" />
+    <Compile Include="Migrations\20180928155214_Corrigindo4.designer.cs">
+      <DependentUpon>20180928155214_Corrigindo4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\Mesa.cs" />

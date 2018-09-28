@@ -242,7 +242,7 @@
         function abreModal(pedidoId) {
             $("#modalFinaliza").modal();
             $("#finalizaTudo").click(function () {
-                finalizarPedido(pedidoId);
+                finalizaPedido(pedidoId);
             });
         }
 
@@ -256,7 +256,7 @@
                     },
                     success: function (data) {
                         if (data.success == true) {
-                            $(pedidoId).remove();
+                            $("#" + pedidoId).remove();
                         } else {
 
                         }

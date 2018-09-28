@@ -122,12 +122,55 @@
             <div class="container-fluid">
 
                 <!-- Breadcrumbs-->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <Span href="#">Caixa</Span>
-                    </li>
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="" style="margin:auto;">
+                                <h1 style="font-size:50px">Caixa</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" style="margin:auto">
+                            <h3>Comanda: </h3>
+                            <input id="nmrComanda" name="nmrComanda" style="font-size:30px" type="number" min="0" class="form-control-sm" />
+                        </div>
+                        <div class="form-group" style="margin:auto">
+                            <h3 class="ml-lg-5">Numero Cartão: </h3>
+                            <input id="nmrCartao" name="nmrCartao" style="font-size:30px" type="number" min="0" class="form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" style="margin:auto">
+                            <button class="btn btn-success" onclick="carregarComanda()" id="btnComanda">Carregar Comanda</button>
+                        </div>
+                        <div class="form-group" style="margin:auto">
+                            <button class="btn btn-success" onclick="carregarCartao()" id="btnCartao">Carregar Cartão</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <table class="table table-hover table-bordered" style="overflow-y:auto;">
+                            <thead>
+                                <tr>
+                                    <th style="width:45%">Pedido</th>
+                                    <th style="width:45%">Observacao</th>
+                                    <th style="width:10%">Preço</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tabela-total"></tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <span id="total"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inptDinheiro">Dinheiro Recebido: </label>
+                        <input type="number" min="0" id="inptDinheiro" name="inptDinheiro" />
+                    </div>
+                    <button class="btn btn-success" id="finalizar">Finalizar Comanda</button>
 
-                </ol>
+
+                </form>
 
                 <!--MESAS-->
                 <!-- Area Chart Example-->
@@ -168,7 +211,6 @@
         </div>
     </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -176,17 +218,91 @@
     <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
-    <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
-    <script src="~/Content/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/Content/vendor/jquery/jquery.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="~/Content/js/sb-admin.min.js"></script>
-
-
     <!-- Demo scripts for this page-->
-    <script src="~/Content/js/demo/datatables-demo.js"></script>
-    <script src="~/Content/js/demo/chart-area-demo.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#finalizar').attr('disabled', true);
+            $('#inptDinheiro').keyup(function () {
+                if ($(this).val().length != 0)
+                    $('#finalizar').attr('disabled', false);
+                else
+                    $('#finalizar').attr('disabled', true);
+            })
+
+            $('#btnComanda').attr('disabled', true);
+            $('#nmrComanda').keyup(function () {
+                if ($(this).val().length != 0)
+                    $('#btnComanda').attr('disabled', false);
+                else
+                    $('#btnComanda').attr('disabled', true);
+            })
+
+            $('#btnCartao').attr('disabled', true);
+            $('#nmrCartao').keyup(function () {
+                if ($(this).val().length != 0)
+                    $('#btnCartao').attr('disabled', false);
+                else
+                    $('#btnCartao').attr('disabled', true);
+            })
+        });
+
+        function carregarComanda() {
+            event.preventDefault();
+            var numeroComanda = $("#nmrComanda").val();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'BuscaPedido',
+                    data: {
+                        numeroComanda
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        var itens = data.ItemPedido;
+                        $(itens).each(function (i) {
+                            var linha = $("<tr>");
+                            var colunaProduto = $("<td>").text(itens[i].Produto.Nome);
+                            var colunaObservacao = $("<td>").text(itens[i].Observacao);
+                            var colunaPreco = $("<td>").text(itens[i].Produto.Preco);
+                            $("#total").text("Total: " + data.Total);
+                            linha.append(colunaProduto);
+                            linha.append(colunaObservacao);
+                            linha.append(colunaPreco);
+                            $(".tabela-total").append(linha);
+                        })
+                    }
+                });
+        }
+
+        function carregarCartao() {
+            event.preventDefault();
+            var numeroCartao = $("#nmrCartao").val();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'BuscaPedido',
+                    data: {
+                        numeroComanda
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                       $("#total").text("Total: " + data.Total);
+                    }
+                });
+        }
+
+
+
+    </script>
+
+
+
 
 </body>
 
