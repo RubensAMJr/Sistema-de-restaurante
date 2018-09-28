@@ -3,6 +3,7 @@ using SistemaRestaurante.Filters;
 using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,6 +35,7 @@ namespace SistemaRestaurante.Controllers
         [Route("BuscaComandas")]
         public ActionResult Busca(int mesaId)
         {
+            ItemPedidoDAO itemDao = new ItemPedidoDAO();
             ComandaDAO dao = new ComandaDAO();
             IList<Comanda> comandas = dao.ListarPorMesa(mesaId);
             IList<Comanda> comandasTotal = dao.ListarSemMesa();
@@ -80,20 +82,43 @@ namespace SistemaRestaurante.Controllers
             ComandaDAO dao = new ComandaDAO();
             PedidoDAO pedidoDao = new PedidoDAO();
             Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
-            pedido.ComandaId = null;
+            pedidoDao.Excluir(pedido);
             Comanda comanda = dao.BuscaPorId(comandaId);
             comanda.MesaId = null;
             dao.Atualizar(comanda);
-
             return Json(new { success = true, resposta = "comanda removida com sucesso" });
 
         }
 
-        //[Route("FinalizaPedido")]
-        //public ActionResult Finaliza(int comandaId)
-        //{
-        //   PedidoDAO pedidoDao = new PedidoDAO();
-        //}
+        [Route("FinalizaPedido")]
+        public ActionResult Finaliza(int comandaId,string observacao,int quantidade,int produtoId)
+        {
+           PedidoDAO pedidoDao = new PedidoDAO();
+           ProdutoDAO produtoDao = new ProdutoDAO();
+           Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
+           Produto produto = produtoDao.BuscaPorId(produtoId);
+           for (int i = 0; i <= quantidade -1; i++)
+           {
+                ItemPedido item = new ItemPedido();
+                item.Entregue = false;
+                item.Observacao = observacao;
+                item.Produto = produto;
+                pedido.Itens.Add(item);
+                pedido.ValorTotal += produto.Preco;
+           }
+            pedidoDao.Atualizar(pedido);
+            return Json(new { success = true, Nome = produto.Nome,observacao,Entregue = false, JsonRequestBehavior.AllowGet });
+        }
+
+        [Route("CarregaDados")]
+        public ActionResult Carrega(int comandaId)
+        {
+            PedidoDAO dao = new PedidoDAO();
+            ItemPedidoDAO itemDao = new ItemPedidoDAO();
+            Pedido pedido = dao.BuscaPorComanda(comandaId);
+            IList<ItemPedido> itens = itemDao.ListarPorPedido(pedido.Id);
+            return Json(new { success = true, ItemPedido = itens }, JsonRequestBehavior.AllowGet);
+        }
 
     }
 

@@ -61,7 +61,7 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                return contexto.Pedido.FirstOrDefault(p => p.ComandaId == comandaId);
+                return contexto.Pedido.Include(Pedido => Pedido.Itens).FirstOrDefault(p => p.ComandaId == comandaId);
             }
         }
     }

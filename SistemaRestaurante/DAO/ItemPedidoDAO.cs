@@ -28,6 +28,26 @@ namespace SistemaRestaurante.DAO
 
         }
 
+        public IList<ItemPedido> ListarPorPedido(int pedidoId)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+
+                return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).Where(i => i.PedidoId == pedidoId).ToList();
+            }
+
+        }
+
+        public IList<ItemPedido> ListarNaoEntregues()
+        {
+            using (var contexto = new RestauranteContext())
+            {
+
+                return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).Where(i => i.Entregue == false).ToList();
+            }
+
+        }
+
         public void Atualizar(ItemPedido pedido)
         {
 

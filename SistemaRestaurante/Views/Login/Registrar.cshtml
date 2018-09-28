@@ -25,7 +25,7 @@
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">Registrar uma novo usuario</div>
             <div class="card-body">
-                <form action="@Url.RouteUrl("ViewMesa")" method="post">
+                <form action="#">
                     <div class="form-group">
                         <label for="cargo">Cargo</label>
                         <select id="cargo" name="Cargo" class="form-control">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" onclick="adicionaUsuario()">Cadastrar</button>
+                    <button  class="btn btn-primary btn-block" onclick="adicionaUsuario()">Cadastrar</button>
                     <div class="alert alert-success sucesso" role="alert">
                     </div>
                     <div class="alert alert-danger falha" role="alert">
@@ -90,43 +90,37 @@
             $(".falha").toggle();
         });
 
-        function check(input) {
-            if (input.value != document.getElementById('Senha').value) {
-                input.setCustomValidity('Senhas são diferentes');
-            } else {
-                // input is valid -- reset the error message
-                input.setCustomValidity('');
-            }
-        }
-
         function adicionaUsuario() {
-
             event.preventDefault();
-            var cargo = $("#cargo").val();
-            var nome = $("#Nome").val();
-            var usuario = $("#Usuario").val();
-            var senha = $("#Senha").val();
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: 'NovoUsuario',
-                    data: {
-                        cargo,nome,usuario,senha
-                    },
-                    cache: false,
-                    async: true,
-                    success: function(data) {
-                        if (data.sucess == true) {
-                            $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
-                            setTimeout(function () {
-                                $(".sucesso").text(data.resposta).toggle();
-                            }, 7000)
-                        } else {
-                            $(".falha").text(data.resposta).toggle().fadeOut(6000);
-                            
+            if (document.getElementById('repetirSenha').value != document.getElementById('Senha').value) {
+                $(".falha").text("Senhas são diferentes!").toggle().fadeOut(6000);
+            } else {
+                var cargo = $("#cargo").val();
+                var nome = $("#Nome").val();
+                var usuario = $("#Usuario").val();
+                var senha = $("#Senha").val();
+                $.ajax(
+                    {
+                        type: 'POST',
+                        url: 'NovoUsuario',
+                        data: {
+                            cargo, nome, usuario, senha
+                        },
+                        cache: false,
+                        async: true,
+                        success: function (data) {
+                            if (data.sucess == true) {
+                                $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
+                                setTimeout(function () {
+                                    $(".sucesso").text(data.resposta).toggle();
+                                }, 7000)
+                            } else {
+                                $(".falha").text(data.resposta).toggle().fadeOut(6000);
+
+                            }
                         }
-                    }
-                });
+                    });
+            }
         }
     </script>
 

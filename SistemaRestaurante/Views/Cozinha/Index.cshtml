@@ -125,13 +125,13 @@
                 <!--PEDIDOS-->
                 @foreach (var pedido in ViewBag.Pedidos)
                 {
-                    <a data-toggle="modal" data-target="#myModal" href="@Url.RouteUrl("ViewCozinha")">
+                    <a data-toggle="modal" data-target="#myModal" href="#" onclick="abreModal(@pedido.Id)">
 
-                        <canvas id="@pedido.PedidoId" width="300" height="200" style="border:2px dotted #000000;">
+                        <canvas id="@pedido.Id" width="300" height="200" style="border:2px dotted #000000;">
                             Canvas não suportado.
                         </canvas>
                         <script>
-                            var c = document.getElementById("@pedido.PedidoId");
+                            var c = document.getElementById("@pedido.Id");
                             var ctx = c.getContext("2d");
                             //Adiciona Cor
                             ctx.fillStyle = "#30a832";
@@ -155,14 +155,12 @@
                             ctx.beginPath();
                             ctx.font = "15px Open Sans Condensed , sans-serif";
                             ctx.fillText("Observação: @pedido.Observacao", 10, 170);
-
-
                         </script>
                     </a>
 
                 }
 
-                <div id="myModal" class="modal fade" role="dialog">
+                <div id="modalFinaliza" class="modal fade" role="dialog">
                     <div class="modal-dialog">
 
                         <!-- Modal content-->
@@ -170,12 +168,13 @@
                             <div class="modal-header">
                                 <h4 class="modal-title">Comandas</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <span class=""></span>
                             </div>
                             <div class="modal-body">
                                 <p>Finalizar pedido?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-default" data-dismiss="modal">Finalizar Pedido</button>
+                                <button type="submit" class="btn btn-default" id="finalizaTudo" data-dismiss="modal">Finalizar Pedido</button>
                             </div>
                         </div>
 
@@ -240,7 +239,30 @@
     <script src="~/Content/js/demo/chart-area-demo.js"></script>
 
     <script>
+        function abreModal(pedidoId) {
+            $("#modalFinaliza").modal();
+            $("#finalizaTudo").click(function () {
+                finalizarPedido(pedidoId);
+            });
+        }
 
+        function finalizaPedido(pedidoId) {
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'RemoveItem',
+                    data: {
+                       pedidoId
+                    },
+                    success: function (data) {
+                        if (data.success == true) {
+                            $(pedidoId).remove();
+                        } else {
+
+                        }
+                    }
+                });
+        }
 
 
     </script>

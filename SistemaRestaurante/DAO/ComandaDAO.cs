@@ -22,7 +22,7 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                return contexto.Comandas.Where(c => c.MesaId == mesaId).ToList();
+                return contexto.Comandas.Where(c => c.MesaId == mesaId).Include(Comanda => Comanda.Pedido).ToList();
             }
         }
 
@@ -85,7 +85,7 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                return contexto.Comandas.FirstOrDefault(c => c.Numero == numeroComanda);
+                return contexto.Comandas.Include(Comanda => Comanda.Pedido).FirstOrDefault(c => c.Numero == numeroComanda);
             }
         }
 

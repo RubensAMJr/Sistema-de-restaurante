@@ -16,7 +16,7 @@ namespace SistemaRestaurante.Controllers
         public ActionResult Index()
         {
             ItemPedidoDAO dao = new ItemPedidoDAO();
-            IList<ItemPedido> pedidos = dao.Listar(); 
+            IList<ItemPedido> pedidos = dao.ListarNaoEntregues(); 
             ViewBag.Pedidos = pedidos;
             Usuario user = (Usuario)Session["Admin"];
             if (user.Cargo.Equals("COZINHEIRO") || user.Cargo.Equals("GERENTE"))
@@ -27,6 +27,16 @@ namespace SistemaRestaurante.Controllers
             {
                 return RedirectToRoute("Sair");
             }
+        }
+
+        [Route("RemoveItem")]
+        public ActionResult Deleta(int pedidoId)
+        {
+            ItemPedidoDAO dao = new ItemPedidoDAO();
+            ItemPedido item = dao.BuscaPorId(pedidoId);
+            item.Entregue = true;
+            dao.Atualizar(item);
+            return Json(new { success = true,resposta = "Pedido finalizado com sucesso"},JsonRequestBehavior.AllowGet);
         }
     }
 }

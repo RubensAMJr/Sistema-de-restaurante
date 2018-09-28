@@ -172,7 +172,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="comandas">Comandas Dessa Mesa:</label>
-                                        <select id="comandas" name="comandas" class="form-control-sm"></select>
+                                        <select onchange="carregaDados()" id="comandas" name="comandas" class="form-control-sm">
+                                            <option id="optionInicial">Selecione a comanda</option>
+                                        </select>
                                         @if (user.Cargo.Equals("GERENTE"))
                                         {
                                             <button class="btn btn-danger ml-2" onclick="excluiComanda()">Remover Comanda</button>
@@ -187,8 +189,7 @@
                                                     <th style="width:10%">Entregue</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr></tr>
+                                            <tbody id="tabela-Itens">
                                             </tbody>
                                         </table>
                                     </div>
@@ -404,8 +405,42 @@
             $("#modalComanda").modal();
         }
 
-        function finalizarPedido(){
+        function finalizarPedido() {
+            event.preventDefault();
+            var produtoId = $("#listaPedidos option:selected").val();
+            var comandaId = $("#comandas option:selected").val();
+            var observacao = $("#observacao").val();
+            var quantidade = $("#qtdPedido").val();
+            console.log(comandaId);
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'FinalizaPedido',
+                    data: {
+                        comandaId, observacao, quantidade, produtoId
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        if (data.success == true) {
+                            var linha = $("<tr>");
+                            var colunaNome = $("<td>").text(data.Nome);
+                            var colunaObserv = $("<td>").text(data.observacao);
+                            if (data.Entregue == false) {
+                                var colunaEntregue = $("<td>").text("NÃO");
+                            } else {
+                                var colunaEntregue = $("<td>").text("SIM");
+                            }
 
+                            linha.append(colunaNome);
+                            linha.append(colunaObserv);
+                            linha.append(colunaEntregue);
+                            $("#tabela-Itens").append(linha);
+                        } else {
+
+                        }
+                    }
+                });
         }
 
         function excluiComanda() {
@@ -425,6 +460,43 @@
                         if (data.success == true) {
                             var selecionado = $("#comandas option:selected");
                             $("#comandasTotal").append(selecionado);
+                        } else {
+
+                        }
+                    }
+                });
+        }
+
+        function carregaDados() {
+            $("#tabela-Itens").children().remove();
+            var comandaId = $("#comandas option:selected").val();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'CarregaDados',
+                    data: {
+                        comandaId
+                    },
+                    success: function (data) {
+
+                        if (data.success == true) {
+                            var itens = data.ItemPedido;
+                            $(itens).each(function (i) {
+                                var linha = $("<tr>");
+                                var colunaNome = $("<td>").text(itens[i].Produto.Nome);
+                                var colunaObserv = $("<td>").text(itens[i].Observacao);
+                                if (itens[i].Entregue == false) {
+                                    var colunaEntregue = $("<td>").text("NÃO");
+                                } else {
+                                    var colunaEntregue = $("<td>").text("SIM");
+                                }
+                                
+                                linha.append(colunaNome);
+                                linha.append(colunaObserv);
+                                linha.append(colunaEntregue);
+                                $("#tabela-Itens").append(linha);
+                                $("#optionInicial").remove();
+                            });
                         } else {
 
                         }
