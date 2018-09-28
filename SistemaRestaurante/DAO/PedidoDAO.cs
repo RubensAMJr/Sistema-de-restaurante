@@ -57,5 +57,12 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public Pedido BuscaPorComanda(int comandaId)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Pedido.FirstOrDefault(p => p.ComandaId == comandaId);
+            }
+        }
     }
 }

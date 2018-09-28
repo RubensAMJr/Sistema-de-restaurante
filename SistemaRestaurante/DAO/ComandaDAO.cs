@@ -54,6 +54,16 @@ namespace SistemaRestaurante.DAO
             }
         }
 
+        public void AtualizarRemover(Comanda comanda)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+
+                contexto.Comandas.Update(comanda);
+                contexto.SaveChanges();
+            }
+        }
+
         public void Excluir(int numeroComanda)
         {
             using (var contexto = new RestauranteContext())
@@ -78,5 +88,7 @@ namespace SistemaRestaurante.DAO
                 return contexto.Comandas.FirstOrDefault(c => c.Numero == numeroComanda);
             }
         }
+
+
     }
 }

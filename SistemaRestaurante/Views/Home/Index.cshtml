@@ -193,7 +193,6 @@
                                         </table>
                                     </div>
                                     <div class="form-group">
-                                        <span>Valor total: </span>
                                     </div>
                                     <button id="btnPedido" class="btn btn-success" onclick="addPedido()">Adicionar Pedido</button>
                                 </form>
@@ -215,15 +214,21 @@
                             </div>
                             <div class="modal-body">
                                 <form>
+                                        <h3 id="comandaAdicionar"></h3>
                                         <label for="listaPedidos">Lista de pedidos: </label>
-                                    <div class="form-group">
-                                        <select style="height:100%;width:100%" size="4" id="listaPedidos" name="listaPedidos" class="form-control-sm mr-5"></select>
-                                    </div>
+                                        <div class="form-group">
+                                            <select style="height:100%;width:100%" size="4" id="listaPedidos" name="listaPedidos" class="form-control-sm mr-5"></select>
+                                            <input type="number" class="form-control-sm" id="qtdPedido" min="1" placeholder="Quantidade" />
+                                            <input type="text" class="form-control-sm" id="observacao" min="1" placeholder="Observacao" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-success ml-1" onclick="finalizarPedido()">Acidionar Pedido</button>
+                                        </div>
                                 </form>
                                 <p id="erro"></p>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-default" data-dismiss="modal" disabled>Fechar</button>
+                                <button class="btn btn-default" data-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                     </div>
@@ -294,6 +299,10 @@
                 linhas.remove();
                 linhasTotal.remove();
             })
+            $('#modalComanda').on('hidden.bs.modal', function () {
+                var linhas = $("#listaPedidos").children();
+                linhas.remove();
+            })
         });
 
         function abreModal(nmrMesa, mesaId) {
@@ -352,8 +361,8 @@
                         
                         if (data.success == true) {
                             var selecionado = $("#comandasTotal option:selected");
+                            console.log(selecionado);
                             $("#comandas").append(selecionado);
-                            $("#comandasTotal option:selected").remove();
                             $("#erro").text(data.resposta).css("color", "green");
                         } else {
 
@@ -364,6 +373,8 @@
 
         function addPedido() {
             event.preventDefault();
+            var comandaNumero = $("#comandas option:selected").text();
+            $("#comandaAdicionar").text("Comanda: " + comandaNumero);
             $.ajax(
                 {
                     type: 'POST',
@@ -378,9 +389,11 @@
                             var produtos = data.Produtos;
                             var lista = $("#listaPedidos");
                             $(produtos).each(function (index) {
-                                var itemLista = $("<option>").text(produtos[index].Nome).attr("value", produtos[index].Id);
                                 if (produtos[index].EstaEmFalta) {
+                                    var itemLista = $("<option>").text(produtos[index].Nome + "(Em Falta)").attr("value", produtos[index].Id);
                                     itemLista.css("color", "red");
+                                } else {
+                                    var itemLista = $("<option>").text(produtos[index].Nome).attr("value", produtos[index].Id);
                                 }
                                 lista.append(itemLista);
                             });
@@ -390,6 +403,36 @@
                 });
             $("#modalComanda").modal();
         }
+
+        function finalizarPedido(){
+
+        }
+
+        function excluiComanda() {
+            event.preventDefault();
+            var comandaId = $("#comandas option:selected").val();
+            var numeroComanda = $("#comandas option:selected").text();
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'ExcluiComanda',
+                    data: {
+                        comandaId
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        if (data.success == true) {
+                            var selecionado = $("#comandas option:selected");
+                            $("#comandasTotal").append(selecionado);
+                        } else {
+
+                        }
+                    }
+                });
+        }
+
+
 
         
     </script>

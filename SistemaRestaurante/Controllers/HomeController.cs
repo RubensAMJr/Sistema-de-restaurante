@@ -74,6 +74,27 @@ namespace SistemaRestaurante.Controllers
             return Json(new { success = true, Produtos = dao.Listar()});
         }
 
+        [Route("ExcluiComanda")]
+        public ActionResult ExcluiComanda(int comandaId)
+        {
+            ComandaDAO dao = new ComandaDAO();
+            PedidoDAO pedidoDao = new PedidoDAO();
+            Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
+            pedido.ComandaId = null;
+            Comanda comanda = dao.BuscaPorId(comandaId);
+            comanda.MesaId = null;
+            dao.Atualizar(comanda);
+
+            return Json(new { success = true, resposta = "comanda removida com sucesso" });
+
+        }
+
+        //[Route("FinalizaPedido")]
+        //public ActionResult Finaliza(int comandaId)
+        //{
+        //   PedidoDAO pedidoDao = new PedidoDAO();
+        //}
+
     }
 
 
