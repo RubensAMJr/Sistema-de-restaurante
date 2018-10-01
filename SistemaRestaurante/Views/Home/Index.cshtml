@@ -28,6 +28,8 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/snack.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -110,8 +112,8 @@
                     </a>
                 </li>
             }
-            </ul>
-            
+        </ul>
+
 
         <div id="content-wrapper">
 
@@ -140,7 +142,7 @@
                         ctx.beginPath();
                         ctx.moveTo(0, 70);
                         ctx.lineTo(200, 70);
-                            ctx.lineWidth = 2;
+                           ctx.lineWidth = 2;
                         ctx.stroke();
                         //Fonte e cor do texto
                         ctx.font = "30px Open Sans Condensed , sans-serif";
@@ -168,19 +170,18 @@
                                     <div class="form-group">
                                         <label for="comandasTotal">N. Comanda:</label>
                                         <select id="comandasTotal" name="comandasTotal" class="form-control-sm mr-5"></select>
-                                        <button class="btn btn-success ml-4" onclick="addComanda()">Acidionar Comanda</button>
+                                        <button id="btnAddComanda" class="btn btn-success ml-4" onclick="addComanda()">Acidionar Comanda</button>
                                     </div>
                                     <div class="form-group">
                                         <label for="comandas">Comandas Dessa Mesa:</label>
-                                        <select onchange="carregaDados()" id="comandas" name="comandas" class="form-control-sm">
-                                        </select>
+                                        <select onchange="carregaDados()" id="comandas" name="comandas" class="form-control-sm"></select>
                                         @if (user.Cargo.Equals("GERENTE"))
                                         {
-                                            <button class="btn btn-danger ml-2" onclick="excluiComanda()">Remover Comanda</button>
+                                            <button id="btnRemover" class="btn btn-danger ml-2" onclick="excluiComanda()">Remover Comanda</button>
                                         }
                                     </div>
                                     <div class="form-group">
-                                        <table class="table table-hover table-responsive table-bordered"  style="overflow-y:auto; height:200px;">
+                                        <table class="table table-hover table-responsive table-bordered" style="overflow-y:auto; height:200px;">
                                             <thead style="width:200%">
                                                 <tr>
                                                     <th style="width:45%">Produto</th>
@@ -188,8 +189,7 @@
                                                     <th style="width:10%">Entregue</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="tabela-Itens">
-                                            </tbody>
+                                            <tbody id="tabela-Itens"></tbody>
                                         </table>
                                     </div>
                                     <div class="form-group">
@@ -197,6 +197,7 @@
                                     <button id="btnPedido" class="btn btn-success" onclick="addPedido()">Adicionar Pedido</button>
                                 </form>
                                 <p id="erro"></p>
+                                <div id="snackbar"></div>
                             </div>
                             <div class="modal-footer">
                                 <button id="fechaMesa" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -214,16 +215,16 @@
                             </div>
                             <div class="modal-body">
                                 <form>
-                                        <h3 id="comandaAdicionar"></h3>
-                                        <label for="listaPedidos">Lista de pedidos: </label>
-                                        <div class="form-group">
-                                            <select style="height:100%;width:100%" size="4" id="listaPedidos" name="listaPedidos" class="form-control-sm mr-5"></select>
-                                            <input type="number" class="form-control-sm" id="qtdPedido" min="1" placeholder="Quantidade" />
-                                            <input type="text" class="form-control-sm" id="observacao" min="1" placeholder="Observacao" />
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-success ml-1" onclick="finalizarPedido()">Acidionar Pedido</button>
-                                        </div>
+                                    <h3 id="comandaAdicionar"></h3>
+                                    <label for="listaPedidos">Lista de pedidos: </label>
+                                    <div class="form-group">
+                                        <select style="height:100%;width:100%" size="4" id="listaPedidos" name="listaPedidos" class="form-control-sm mr-5"></select>
+                                        <input type="number" class="form-control-sm" id="qtdPedido" min="1" placeholder="Quantidade" />
+                                        <input type="text" class="form-control-sm" id="observacao" min="1" placeholder="Observacao" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-success ml-1" onclick="finalizarPedido()">Acidionar Pedido</button>
+                                    </div>
                                 </form>
                                 <p id="erro"></p>
                             </div>
@@ -302,13 +303,17 @@
                 tabela.remove();
                 var itemLista = $("<option>").text("Selecione a comanda").attr("id", "optionInicial");
                 $("comandas").append(itemLista);
-
+                $("#btnRemover").attr("disabled", true);
+                $("#btnPedido").attr('disabled', true);
+                $("#btnAddComanda").attr('disabled', true);
             })
             $('#modalComanda').on('hidden.bs.modal', function () {
                 var linhas = $("#listaPedidos").children();
                 linhas.remove();
             })
-
+            $("#btnRemover").attr("disabled", true);
+            $("#btnPedido").attr('disabled', true);
+            $("#btnAddComanda").attr('disabled', true);
         });
 
         function abreModal(nmrMesa, mesaId) {
@@ -329,6 +334,12 @@
                             var itemLista = $("<option>").text(comandasTotal[index].Numero).attr("value", comandasTotal[index].Id);
                             listaTotal.append(itemLista);
                         });
+                        if ($(comandasTotal).length == 0) {
+                            mostraMensagem("Nenhuma Comanda Disponível", false);
+                        } else {
+                            $("#btnAddComanda").attr('disabled', false);
+
+                        }
                         if (data.success == true) {
                             $("#erro").text("");
                             var comandas = data.Comandas;
@@ -340,24 +351,23 @@
                                 lista.append(itemLista);
                             });
                         } else {
-                            $("#erro").text(data.resposta).css("color", "red");
-                        }
-                        if ($("#comandas").children().length == 0) {
-                            $("#btnPedido").at;
+                            mostraMensagem(data.resposta, false);
                         }
                     }
                 });
-            
+
             $("#modalMesa").modal();
         }
 
         function addComanda()
         {
+            $("#btnRemover").attr("disabled", false);
+            $("#optionInicial").remove();
             event.preventDefault();
             var userId = @user.Id;
             var mesaId = $(".modal-title").attr("id");
             var comandaId = $("#comandasTotal option:selected").val();
-           
+
             $.ajax(
                 {
                     type: 'POST',
@@ -366,12 +376,15 @@
                         mesaId, comandaId, userId
                     },
                     success: function (data) {
-                        
+
                         if (data.success == true) {
+                            $("#btnPedido").attr('disabled', false);
                             var selecionado = $("#comandasTotal option:selected");
-                            console.log(selecionado);
                             $("#comandas").append(selecionado);
-                            $("#erro").text(data.resposta).css("color", "green");
+                            mostraMensagem(data.resposta, true);
+                            if ($("#comandasTotal").children().length == 0) {
+                                $("#btnAddComanda").attr('disabled', true);
+                            }
                         } else {
 
                         }
@@ -392,7 +405,7 @@
                     cache: false,
                     async: true,
                     success: function (data) {
-                        
+
                         if (data.success == true) {
                             var produtos = data.Produtos;
                             var lista = $("#listaPedidos");
@@ -400,6 +413,7 @@
                                 if (produtos[index].EstaEmFalta) {
                                     var itemLista = $("<option>").text(produtos[index].Nome + "(Em Falta)").attr("value", produtos[index].Id);
                                     itemLista.css("color", "red");
+                                    itemLista.attr('disabled',true)
                                 } else {
                                     var itemLista = $("<option>").text(produtos[index].Nome).attr("value", produtos[index].Id);
                                 }
@@ -465,8 +479,12 @@
                     async: true,
                     success: function (data) {
                         if (data.success == true) {
+                            $("#btnAddComanda").attr('disabled', false);
                             var selecionado = $("#comandas option:selected");
                             $("#comandasTotal").append(selecionado);
+                            if ($("#comandas").children().length == 0) {
+                                $("#btnPedido").attr('disabled', true);
+                            }
                         } else {
 
                         }
@@ -475,6 +493,8 @@
         }
 
         function carregaDados() {
+            $("#btnRemover").attr("disabled", false);
+            $("#optionInicial").remove();
             $("#tabela-Itens").children().remove();
             var comandaId = $("#comandas option:selected").val();
             $.ajax(
@@ -487,6 +507,7 @@
                     success: function (data) {
 
                         if (data.success == true) {
+                            $("#btnPedido").attr('disabled', false);
                             var itens = data.ItemPedido;
                             $(itens).each(function (i) {
                                 var linha = $("<tr>");
@@ -497,12 +518,11 @@
                                 } else {
                                     var colunaEntregue = $("<td>").text("SIM");
                                 }
-                                
+
                                 linha.append(colunaNome);
                                 linha.append(colunaObserv);
                                 linha.append(colunaEntregue);
                                 $("#tabela-Itens").append(linha);
-                                $("#optionInicial").remove();
                             });
                         } else {
 
@@ -511,9 +531,19 @@
                 });
         }
 
-
-
-        
+        function mostraMensagem(resposta, success) {
+            var x = $("#snackbar");
+            x.text(resposta);
+            if (success == true) {
+                x.css("background-color", "green");
+            } else {
+                x.css("background-color", "red");
+            }
+            x.addClass("show");
+            setTimeout(function () {
+                x.removeClass("show")
+            }, 3000);
+        }
     </script>
 
 </body>

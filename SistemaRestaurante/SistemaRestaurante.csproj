@@ -177,6 +177,7 @@
     <Content Include="Content\CSS\sb-admin.min.css" />
     <Content Include="Content\CSS\select.bootstrap4.min.css" />
     <Content Include="Content\CSS\select.dataTables.min.css" />
+    <Content Include="Content\CSS\snack.css" />
     <Content Include="Content\IMG\bennerLogo.png" />
     <Content Include="Content\IMG\RestauranteIcone .png" />
     <Content Include="Content\js\dataTables.buttons.min.js" />

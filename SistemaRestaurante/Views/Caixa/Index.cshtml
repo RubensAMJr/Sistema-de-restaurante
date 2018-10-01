@@ -28,6 +28,8 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/snack.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -137,7 +139,7 @@
                         </div>
                         <div class="form-group" style="margin:auto">
                             <h3 class="ml-lg-5">Numero Cartão: </h3>
-                            <input id="nmrCartao" name="nmrCartao" style="font-size:30px" type="number" min="0" class="form-control-sm" />
+                            <input id="nmrCartao" name="nmrCartao" style="font-size:30px" type="number" min="0" class="form-control-sm" disabled />
                         </div>
                     </div>
                     <div class="row">
@@ -161,16 +163,26 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <span id="total"></span>
+                        <label for="total">Total:</label>
+                        <input class="form-control-sm" id="total" name="total" type="number" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="desconto">Com Desconto:</label>
+                        <input class="form-control-sm" id="desconto" name="desconto" type="number" disabled />
                     </div>
                     <div class="form-group">
                         <label for="inptDinheiro">Dinheiro Recebido: </label>
-                        <input type="number" min="0" id="inptDinheiro" name="inptDinheiro" />
+                        <input type="number" min="0" id="inptDinheiro" name="inptDinheiro" disabled />
                     </div>
-                    <button class="btn btn-success" id="finalizar">Finalizar Comanda</button>
+                    <button class="btn btn-success" id="finalizar" onclick="abreModal()">Finalizar Comanda</button>
+
 
 
                 </form>
+
+                <div id="snackbar"></div>
+
+
 
                 <!--MESAS-->
                 <!-- Area Chart Example-->
@@ -185,6 +197,32 @@
                 </footer>
             </div>
             <!-- /.content-wrapper -->
+        </div>
+
+        <div id="modalFinaliza" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title titulo-modal"></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <h3 id="totalPedido"></h3>
+                        </div>
+                        <div class="form-group">
+                            <h3 id="dinheiro"></h3>
+                        </div>
+                        <div class="form-group">
+                            <h3 id="troco"></h3>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" id="finalizaTudo" data-dismiss="modal">Finalizar Comanda</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /#wrapper -->
         <!-- Scroll to Top Button-->
@@ -211,6 +249,8 @@
         </div>
     </div>
     <!-- Bootstrap core JavaScript-->
+    <script src="~/Content/vendor/jquery/jquery.js"></script>
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -218,8 +258,6 @@
     <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
-    <script src="~/Content/vendor/jquery/jquery.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="~/Content/js/sb-admin.min.js"></script>
     <!-- Demo scripts for this page-->
@@ -248,6 +286,17 @@
                 else
                     $('#btnCartao').attr('disabled', true);
             })
+
+            $("#nmrComanda").keyup(function () {
+                $(".tabela-total").children().remove();
+                $("#inptDinheiro").attr('disabled', true).val('');
+                $("#total").val(0);
+                $("#desconto").val(0);
+                $("#nmrCartao").attr('disabled', true);
+                $('#finalizar').attr('disabled', true);
+            });
+
+
         });
 
         function carregarComanda() {
@@ -263,41 +312,120 @@
                     cache: false,
                     async: true,
                     success: function (data) {
-                        var itens = data.ItemPedido;
-                        $(itens).each(function (i) {
-                            var linha = $("<tr>");
-                            var colunaProduto = $("<td>").text(itens[i].Produto.Nome);
-                            var colunaObservacao = $("<td>").text(itens[i].Observacao);
-                            var colunaPreco = $("<td>").text(itens[i].Produto.Preco);
-                            $("#total").text("Total: " + data.Total);
-                            linha.append(colunaProduto);
-                            linha.append(colunaObservacao);
-                            linha.append(colunaPreco);
-                            $(".tabela-total").append(linha);
-                        })
+                        mostraMensagem(data.resposta, data.success);
+                        if (data.success == true) {
+                            habilitarCampos();
+                            var itens = data.ItemPedido;
+                            $(itens).each(function (i) {
+                                var linha = $("<tr>");
+                                var colunaProduto = $("<td>").text(itens[i].Produto.Nome);
+                                var colunaObservacao = $("<td>").text(itens[i].Observacao);
+                                var colunaPreco = $("<td>").text(itens[i].Produto.Preco);
+                                $("#total").val(data.Total);
+                                $("#desconto").val(data.Total);
+                                linha.append(colunaProduto);
+                                linha.append(colunaObservacao);
+                                linha.append(colunaPreco);
+                                $(".tabela-total").append(linha);
+                            })
+                        } else {
+                            $(".tabela-total").children().remove();
+                            $("#inptDinheiro").attr('disabled', false);
+                            $("#total").val(0);
+                            $("#desconto").val(0);
+                            $("#nmrCartao").attr('disabled', true);
+                        }
                     }
                 });
+        }
+
+        function habilitarCampos() {
+            $("#inptDinheiro").attr('disabled', false);
+            $("#total").val(0);
+            $("#desconto").val(0);
+            $(".tabela-total").children().remove();
+            $("#nmrCartao").attr('disabled', false);
         }
 
         function carregarCartao() {
             event.preventDefault();
             var numeroCartao = $("#nmrCartao").val();
+            var total = $("#total").val().replace(",", ".");
+            console.log(numeroCartao);
+            console.log(total);
             $.ajax(
                 {
                     type: 'POST',
-                    url: 'BuscaPedido',
+                    url: 'CarregaCartao',
                     data: {
-                        numeroComanda
+                        numeroCartao, total
                     },
                     cache: false,
                     async: true,
                     success: function (data) {
-                       $("#total").text("Total: " + data.Total);
+                        mostraMensagem(data.resposta, data.success);
+                        if (data.success == true) {
+                            total = (total - data.Total).toFixed(2);
+                            $("#desconto").val(total);
+                        } else {
+
+                        }
                     }
                 });
         }
 
+        function mostraMensagem(resposta, success) {
+            var x = $("#snackbar");
+            x.text(resposta);
+            if (success == true) {
+                x.css("background-color", "green");
+            } else {
+                x.css("background-color", "red");
+            }
+            x.addClass("show");
+            setTimeout(function () {
+                x.removeClass("show")
+            }, 3000);
+        }
 
+        function abreModal() {
+            event.preventDefault();
+            var total = $("#desconto").val();
+            var recebido = $("#inptDinheiro").val();
+            if (parseFloat(recebido) >= parseFloat(total)) {
+                $(".titulo-modal").text("Finalizar Comanda " + $("#nmrComanda").val());
+                $("#totalPedido").text("Total: "+total);
+                $("#dinheiro").text("Dinheiro recebido: "+recebido);
+                $("#troco").text("Troco: "+(parseFloat(recebido) - parseFloat(total)));
+                $("#modalFinaliza").modal();
+                $("#finalizaTudo").click(function () {
+                    finalizaComanda($("#nmrComanda").val());
+                });
+            } else {
+                mostraMensagem("Dinheiro insuficiente", false);
+            }
+        }
+
+        function finalizaComanda(nmrComanda) {
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'FinalizaComanda',
+                    data: {
+                        nmrComanda
+                    },
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        mostraMensagem(data.resposta, data.success);
+                        if (data.success == true) {
+                            
+                        } else {
+                            
+                        }
+                    }
+                });
+        }
 
     </script>
 
