@@ -175,6 +175,7 @@
     <Content Include="Content\CSS\reset.css" />
     <Content Include="Content\CSS\sb-admin.css" />
     <Content Include="Content\CSS\sb-admin.min.css" />
+    <Content Include="Content\CSS\scale.css" />
     <Content Include="Content\CSS\select.bootstrap4.min.css" />
     <Content Include="Content\CSS\select.dataTables.min.css" />
     <Content Include="Content\CSS\snack.css" />

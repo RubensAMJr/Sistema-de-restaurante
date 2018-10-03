@@ -22,6 +22,7 @@
 
     <!-- Page level plugin CSS-->
     <link href="~/Content/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    
 
     <link href="~/Content/CSS/hover.css" rel="stylesheet" />
 
@@ -29,6 +30,11 @@
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
     <link href="~/Content/CSS/snack.css" rel="stylesheet" />
+
+    <link href="~/Content/CSS/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS/select.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS/select.dataTables.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -187,6 +193,7 @@
                                                     <th style="width:45%">Produto</th>
                                                     <th style="width:45%">Observação</th>
                                                     <th style="width:10%">Entregue</th>
+                                                    <th style="width:10%">Remover</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tabela-Itens"></tbody>
@@ -223,10 +230,15 @@
                                         <input type="text" class="form-control-sm" id="observacao" min="1" placeholder="Observacao" />
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-success ml-1" onclick="finalizarPedido()">Acidionar Pedido</button>
+                                        <button id="btnAddPedido" class="btn btn-success ml-1" data-dismiss="modal" onclick="finalizarPedido()">Acidionar Pedido</button>
                                     </div>
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
                                 </form>
                                 <p id="erro"></p>
+                                <div class="snackbar2" id="snackbar"></div>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -283,9 +295,13 @@
     <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
     <script src="~/Content/vendor/datatables/jquery.dataTables.js"></script>
     <script src="~/Content/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/Content/js/dataTables.buttons.min.js"></script>
+
+    <script src="~/Content/js/sb-admin.min.js"></script>
+
+    <script src="~/Content/js/dataTables.select.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="~/Content/js/sb-admin.min.js"></script>
 
 
     <!-- Demo scripts for this page-->
@@ -314,6 +330,15 @@
             $("#btnRemover").attr("disabled", true);
             $("#btnPedido").attr('disabled', true);
             $("#btnAddComanda").attr('disabled', true);
+
+            $('#btnAddPedido').attr('disabled', true);
+            $('#observacao').val('');
+            $('#qtdPedido').keyup(function () {
+                if ($(this).val().length != 0 && parseInt($(this).val()) > 0)
+                    $('#btnAddPedido').attr('disabled', false);
+                else
+                    $('#btnAddPedido').attr('disabled', true);
+            })
         });
 
         function abreModal(nmrMesa, mesaId) {
@@ -413,7 +438,8 @@
                                 if (produtos[index].EstaEmFalta) {
                                     var itemLista = $("<option>").text(produtos[index].Nome + "(Em Falta)").attr("value", produtos[index].Id);
                                     itemLista.css("color", "red");
-                                    itemLista.attr('disabled',true)
+                                    itemLista.attr('disabled', true)
+                                    itemLista.addClass("falta");
                                 } else {
                                     var itemLista = $("<option>").text(produtos[index].Nome).attr("value", produtos[index].Id);
                                 }
@@ -431,8 +457,10 @@
             var produtoId = $("#listaPedidos option:selected").val();
             var comandaId = $("#comandas option:selected").val();
             var observacao = $("#observacao").val();
+            if (observacao.length == 0) {
+                observacao = "Nenhuma";
+            }
             var quantidade = $("#qtdPedido").val();
-            console.log(comandaId);
             $.ajax(
                 {
                     type: 'POST',
@@ -452,11 +480,21 @@
                             } else {
                                 var colunaEntregue = $("<td>").text("SIM");
                             }
+                            var colunaRemove = $("<td>");
+                            var remove = $("<a>").attr("href", "#");
+                            remove.click(function () {
+                                removeItem(data.ItemId, this);
+                            });
+                            var icone = $("<i>").addClass("fas fa-archive");
+                            remove.append(icone);
+                            colunaRemove.append(remove);
 
                             linha.append(colunaNome);
                             linha.append(colunaObserv);
                             linha.append(colunaEntregue);
+                            linha.append(colunaRemove);
                             $("#tabela-Itens").append(linha);
+                            mostraMensagem("Pedido adicionado com sucesso",true);
                         } else {
 
                         }
@@ -484,7 +522,9 @@
                             $("#comandasTotal").append(selecionado);
                             if ($("#comandas").children().length == 0) {
                                 $("#btnPedido").attr('disabled', true);
+                                $("#btnPedidoRemove").attr('disabled', true);
                             }
+                            $("#tabela-Itens").children().remove();
                         } else {
 
                         }
@@ -508,6 +548,7 @@
 
                         if (data.success == true) {
                             $("#btnPedido").attr('disabled', false);
+                            $("#btnPedidoRemove").attr('disabled',false);
                             var itens = data.ItemPedido;
                             $(itens).each(function (i) {
                                 var linha = $("<tr>");
@@ -518,10 +559,19 @@
                                 } else {
                                     var colunaEntregue = $("<td>").text("SIM");
                                 }
+                                var colunaRemove = $("<td>");
+                                var remove = $("<a>").attr("href","#");
+                                remove.click(function () {
+                                    removeItem(itens[i].Id,this);
+                                });
+                                var icone = $("<i>").addClass("fas fa-archive");
+                                remove.append(icone);
+                                colunaRemove.append(remove);
 
                                 linha.append(colunaNome);
                                 linha.append(colunaObserv);
                                 linha.append(colunaEntregue);
+                                linha.append(colunaRemove);
                                 $("#tabela-Itens").append(linha);
                             });
                         } else {
@@ -543,6 +593,41 @@
             setTimeout(function () {
                 x.removeClass("show")
             }, 3000);
+        }
+
+        function mostraMensagemPedido(resposta, success) {
+            event.preventDefault();
+            var x = $(".snackbar2");
+            x.text(resposta);
+            if (success == true) {
+                x.css("background-color", "green");
+            } else {
+                x.css("background-color", "red");
+            }
+            x.addClass("show");
+            setTimeout(function () {
+                x.removeClass("show")
+            }, 3000);
+        }
+
+        function removeItem(itemId, atual) {
+            $.ajax(
+                {
+                    type: 'POST',
+                    url: 'ExcluiItem',
+                    data: {
+                        itemId
+                    },
+                    success: function (data) {
+                        if (data.success == true) {
+                            $(atual).parent().parent().remove();
+                            mostraMensagem(data.resposta, false);
+                        } else {
+                            mostraMensagem(data.resposta, false);
+                        }
+                    }
+                });
+            
         }
     </script>
 

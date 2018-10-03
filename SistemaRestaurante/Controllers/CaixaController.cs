@@ -44,7 +44,7 @@ namespace SistemaRestaurante.Controllers
             else
             {
                 Pedido pedido = pedidoDao.BuscaPorComanda(comanda.Id);
-                IList<ItemPedido> itens = itemDao.ListarPorPedido(pedido.Id);
+                IList<ItemPedido> itens = itemDao.ListarEntregues(pedido.Id);
                 if (itens.Count == 0)
                 {
                     return Json(new { success = false, resposta = "Comanda não possui pedidos" }, JsonRequestBehavior.AllowGet);

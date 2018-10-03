@@ -48,6 +48,16 @@ namespace SistemaRestaurante.DAO
 
         }
 
+        public IList<ItemPedido> ListarEntregues(int pedidoId)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+
+                return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).Where(i => i.Entregue == true).Where(i => i.PedidoId == pedidoId).ToList();
+            }
+
+        }
+
         public void Atualizar(ItemPedido pedido)
         {
 
@@ -73,6 +83,14 @@ namespace SistemaRestaurante.DAO
             using (var contexto = new RestauranteContext())
             {
                 return contexto.ItensPedido.Find(id);
+            }
+        }
+
+        public ItemPedido BuscaUltimo()
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.ItensPedido.LastOrDefault();
             }
         }
 

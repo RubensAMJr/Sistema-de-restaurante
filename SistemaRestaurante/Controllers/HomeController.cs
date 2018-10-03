@@ -93,6 +93,7 @@ namespace SistemaRestaurante.Controllers
         [Route("FinalizaPedido")]
         public ActionResult Finaliza(int comandaId,string observacao,int quantidade,int produtoId)
         {
+            ItemPedidoDAO itemDao = new ItemPedidoDAO();
            PedidoDAO pedidoDao = new PedidoDAO();
            ProdutoDAO produtoDao = new ProdutoDAO();
            Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
@@ -107,7 +108,8 @@ namespace SistemaRestaurante.Controllers
                 pedido.ValorTotal += produto.Preco;
            }
             pedidoDao.Atualizar(pedido);
-            return Json(new { success = true, Nome = produto.Nome,observacao,Entregue = false, JsonRequestBehavior.AllowGet });
+            ItemPedido ultimo = itemDao.BuscaUltimo();
+            return Json(new { success = true, Nome = produto.Nome, observacao, Entregue = false, ItemId = ultimo.Id, JsonRequestBehavior.AllowGet });
         }
 
         [Route("CarregaDados")]
@@ -120,6 +122,25 @@ namespace SistemaRestaurante.Controllers
             return Json(new { success = true, ItemPedido = itens }, JsonRequestBehavior.AllowGet);
         }
 
+        [Route("ExcluiItem")]
+        public ActionResult ExcluirPedido(int itemId)
+        { 
+
+            ItemPedidoDAO dao = new ItemPedidoDAO();
+            ItemPedido item = dao.BuscaPorId(itemId);
+            if (item == null)
+            {
+                return Json(new { success = false, resposta = "Item não existe" }, JsonRequestBehavior.AllowGet);
+            }else if (item.Entregue == true)
+            {
+                return Json(new { success = false, resposta = "Item já foi entregue" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                dao.Excluir(item);
+                return Json(new { success = true, resposta = "Item foi removido" }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 
 
