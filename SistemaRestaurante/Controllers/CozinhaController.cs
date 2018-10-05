@@ -35,9 +35,12 @@ namespace SistemaRestaurante.Controllers
         {
             ItemPedidoDAO dao = new ItemPedidoDAO();
             ItemPedido item = dao.BuscaPorId(pedidoId);
+            Pedido pedido = new PedidoDAO().BuscaPorId(pedidoId);
+            Comanda comanda = new ComandaDAO().BuscaPorId((int)pedido.ComandaId);
+            Mesa mesa = new MesasDAO().BuscaPorId((int)comanda.MesaId);
             item.Entregue = true;
             dao.Atualizar(item);
-            return Json(new { success = true,resposta = "Pedido finalizado com sucesso"},JsonRequestBehavior.AllowGet);
+            return Json(new { success = true,resposta = "Pedido finalizado com sucesso",Comanda = comanda.Numero,Mesa = mesa.Numero},JsonRequestBehavior.AllowGet);
         }
     }
 }
