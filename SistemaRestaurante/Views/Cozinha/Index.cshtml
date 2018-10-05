@@ -1,5 +1,7 @@
 ﻿@using SistemaRestaurante.Models;
 @{Usuario user = (Usuario)Session["Admin"];}
+@{DateTime agora = DateTime.Now;}
+@{TimeSpan diff = new TimeSpan();}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -123,45 +125,70 @@
             <div class="container-fluid">
 
                 <!-- Breadcrumbs-->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="#">Pedidos</a>
-                    </li>
-                    <li class="breadcrumb-item active">Lista</li>
-                </ol>
+                
                 <!--PEDIDOS-->
                 @foreach (var pedido in ViewBag.Pedidos)
                 {
                     <a data-toggle="modal" data-target="#myModal" href="#" onclick="abreModal(@pedido.Id)">
 
-                        <canvas id="@pedido.Id" width="300" height="200" style="border:2px dotted #000000;">
+                        <canvas id="@pedido.Id" width="300" height="200" style="border:2px solid #000000;">
                             Canvas não suportado.
                         </canvas>
                         <script>
+
                             var c = document.getElementById("@pedido.Id");
                             var ctx = c.getContext("2d");
-                            //Adiciona Cor
-                            ctx.fillStyle = "#30a832";
-                            ctx.font = "30px Verdana";
-                            ctx.fillRect(0, 0, 300, 200);
-                            //Desenha linha
-                            ctx.beginPath();
+                            @if(agora.Subtract(pedido.Data).TotalMinutes <= 10) {
+                                <text>
+                                //Adiciona Cor
+                                ctx.fillStyle = "#30a832";
+                                ctx.font = "30px Verdana";
+                                 ctx.fillRect(0, 0, 300, 200);
+                                ctx.fillStyle = "black";
+                                ctx.font = "25px Open Sans Condensed , sans-serif";
+                                ctx.fillText("Status : Normal", 5, 125);
+                                </text>
+                            }
+                            else if(agora.Subtract(pedido.Data).TotalMinutes > 10 && agora.Subtract(pedido.Data).TotalMinutes <= 30) {
+                                <text>
+                                //Adiciona Cor
+                                ctx.fillStyle = "#fff605";
+                                ctx.font = "30px Verdana";
+                                ctx.fillRect(0, 0, 300, 200);
+                                ctx.fillStyle = "black";
+                                ctx.font = "25px Open Sans Condensed , sans-serif";
+                                ctx.fillText("Status : Atrasado", 5, 125);
+                                </text>
+                            }
+                            else {
+                                <text>
+                                //Adiciona Cor
+                                ctx.fillStyle = "#ff0f07";
+                                ctx.font = "30px Verdana";
+                                ctx.fillRect(0, 0, 300, 200);
+                                 ctx.fillStyle = "black";
+                                ctx.font = "25px Open Sans Condensed , sans-serif";
+                                ctx.fillText("Status : Muito Atrasado", 5, 125);
+                                </text>
+                            }
                             ctx.moveTo(0, 150);
-                            ctx.lineTo(99999, 70);
+                            ctx.lineTo(300, 150);
+                            ctx.lineWidth = 2;
                             ctx.stroke();
                             //Define cor e Fonte
                             ctx.fillStyle = "black";
-                            ctx.font = "30px Open Sans Condensed , sans-serif";
+                            ctx.font = "40px Open Sans Condensed , sans-serif";
                             //Adiciona informações
                             ctx.fillText("Pedido @pedido.Id", 5, 40);
                             ctx.beginPath();
-                            ctx.font = "15px Open Sans Condensed , sans-serif";
+                            ctx.font = "20px Open Sans Condensed , sans-serif";
                             ctx.fillText("Produto: @pedido.Produto.Nome ", 5, 65);
-
-
+                            ctx.font = "25px Open Sans Condensed , sans-serif";
+                            ctx.fillText("Hora: @pedido.Data.ToString("HH:mm") ", 5, 95);
+                            
                             ctx.beginPath();
-                            ctx.font = "15px Open Sans Condensed , sans-serif";
-                            ctx.fillText("Observação: @pedido.Observacao", 10, 170);
+                            ctx.font = "20px Open Sans Condensed , sans-serif";
+                            ctx.fillText("Observação: @pedido.Observacao", 5, 180);
                         </script>
                     </a>
 

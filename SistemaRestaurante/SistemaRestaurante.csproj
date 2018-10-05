@@ -1,5 +1,5 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.EntityFrameworkCore.Design.2.1.1\build\net461\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.1\build\net461\Microsoft.EntityFrameworkCore.Design.props')" />
+  <Import Project="..\packages\Microsoft.EntityFrameworkCore.Design.2.1.4\build\net461\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.4\build\net461\Microsoft.EntityFrameworkCore.Design.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -46,17 +46,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Abstractions.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Design, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Design.2.1.1\lib\net461\Microsoft.EntityFrameworkCore.Design.dll</HintPath>
+    <Reference Include="Microsoft.EntityFrameworkCore.Design, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Design.2.1.4\lib\net461\Microsoft.EntityFrameworkCore.Design.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=2.1.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.2.1.4\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.SqlServer, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.SqlServer.2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
@@ -109,8 +109,8 @@
     <Reference Include="System.Data.SqlClient, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.5.1\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Interactive.Async, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net46\System.Interactive.Async.dll</HintPath>
@@ -1580,89 +1580,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20180814162017_Inicial.cs" />
-    <Compile Include="Migrations\20180814162017_Inicial.designer.cs">
-      <DependentUpon>20180814162017_Inicial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180814162852_Inicial2.cs" />
-    <Compile Include="Migrations\20180814162852_Inicial2.designer.cs">
-      <DependentUpon>20180814162852_Inicial2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180814173531_Resto.cs" />
-    <Compile Include="Migrations\20180814173531_Resto.designer.cs">
-      <DependentUpon>20180814173531_Resto.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180817004150_MesaComanda.cs" />
-    <Compile Include="Migrations\20180817004150_MesaComanda.designer.cs">
-      <DependentUpon>20180817004150_MesaComanda.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180822233724_Nova.cs" />
-    <Compile Include="Migrations\20180822233724_Nova.designer.cs">
-      <DependentUpon>20180822233724_Nova.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180823002531_tst.cs" />
-    <Compile Include="Migrations\20180823002531_tst.designer.cs">
-      <DependentUpon>20180823002531_tst.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180823161009_ng.cs" />
-    <Compile Include="Migrations\20180823161009_ng.designer.cs">
-      <DependentUpon>20180823161009_ng.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180824170902_RelacaoMesaComanda.cs" />
-    <Compile Include="Migrations\20180824170902_RelacaoMesaComanda.designer.cs">
-      <DependentUpon>20180824170902_RelacaoMesaComanda.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180824172141_CorrecaoRelacaoMesaComanda.cs" />
-    <Compile Include="Migrations\20180824172141_CorrecaoRelacaoMesaComanda.designer.cs">
-      <DependentUpon>20180824172141_CorrecaoRelacaoMesaComanda.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180830164750_ItemPedido.cs" />
-    <Compile Include="Migrations\20180830164750_ItemPedido.designer.cs">
-      <DependentUpon>20180830164750_ItemPedido.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180830173424_ItemPedido2.cs" />
-    <Compile Include="Migrations\20180830173424_ItemPedido2.designer.cs">
-      <DependentUpon>20180830173424_ItemPedido2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180830192527_enum.cs" />
-    <Compile Include="Migrations\20180830192527_enum.designer.cs">
-      <DependentUpon>20180830192527_enum.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180904194112_NumeroPedido.cs" />
-    <Compile Include="Migrations\20180904194112_NumeroPedido.designer.cs">
-      <DependentUpon>20180904194112_NumeroPedido.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180904194857_NumeroPedido2.cs" />
-    <Compile Include="Migrations\20180904194857_NumeroPedido2.designer.cs">
-      <DependentUpon>20180904194857_NumeroPedido2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180927175559_Correcao.cs" />
-    <Compile Include="Migrations\20180927175559_Correcao.designer.cs">
-      <DependentUpon>20180927175559_Correcao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180927181826_Corrigindo.cs" />
-    <Compile Include="Migrations\20180927181826_Corrigindo.designer.cs">
-      <DependentUpon>20180927181826_Corrigindo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180927183244_Corrigindo2.cs" />
-    <Compile Include="Migrations\20180927183244_Corrigindo2.designer.cs">
-      <DependentUpon>20180927183244_Corrigindo2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180928003808_Corrigindo3.cs" />
-    <Compile Include="Migrations\20180928003808_Corrigindo3.designer.cs">
-      <DependentUpon>20180928003808_Corrigindo3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180928155214_Corrigindo4.cs" />
-    <Compile Include="Migrations\20180928155214_Corrigindo4.designer.cs">
-      <DependentUpon>20180928155214_Corrigindo4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20181004172916_QuantidadeProduto.cs" />
-    <Compile Include="Migrations\20181004172916_QuantidadeProduto.designer.cs">
-      <DependentUpon>20181004172916_QuantidadeProduto.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20181004194246_MesaOcupada.cs" />
-    <Compile Include="Migrations\20181004194246_MesaOcupada.designer.cs">
-      <DependentUpon>20181004194246_MesaOcupada.cs</DependentUpon>
+    <Compile Include="Migrations\20181005163931_Inicial.cs" />
+    <Compile Include="Migrations\20181005163931_Inicial.designer.cs">
+      <DependentUpon>20181005163931_Inicial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
@@ -1788,7 +1708,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.1\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.EntityFrameworkCore.Design.2.1.1\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.EntityFrameworkCore.Design.2.1.4\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.EntityFrameworkCore.Design.2.1.4\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

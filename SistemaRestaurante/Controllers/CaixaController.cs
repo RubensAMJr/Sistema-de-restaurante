@@ -76,6 +76,7 @@ namespace SistemaRestaurante.Controllers
         [Route("FinalizaComanda")]
         public ActionResult FinalizaComanda(int nmrComanda)
         {
+            MesasDAO mesaDao = new MesasDAO();
             ComandaDAO dao = new ComandaDAO();
             PedidoDAO pedDao = new PedidoDAO();
             Comanda comanda = dao.BuscaPorNumero(nmrComanda);
@@ -85,11 +86,18 @@ namespace SistemaRestaurante.Controllers
             }
             else
             {
+                Mesa mesa = mesaDao.BuscaPorId((int)comanda.MesaId);
+                Debug.WriteLine(mesa.Numero);
                 Pedido pedido = pedDao.BuscaPorComanda(comanda.Id);
                 comanda.MesaId = null;
                 pedido.ComandaId = null;
                 dao.Atualizar(comanda);
                 pedDao.Atualizar(pedido);
+                if (dao.ListarPorMesa(mesa.MesaId).Count == 0) {
+                    Debug.Write("entrei");
+                    mesa.Ocupada = false;
+                    mesaDao.Atualizar(mesa);
+                }
                 return Json(new { success = true, resposta = "Comanda finalizada com sucesso" }, JsonRequestBehavior.AllowGet);
             }
         }
