@@ -90,7 +90,7 @@ namespace SistemaRestaurante.Controllers
             if (dao.BuscaPorNome(Nome) != null)
             {
                 dao.ExcluirPorNome(Nome);
-                return Json(new { success = true , resposta = "Usuario removido com sucesso"});
+                return Json(new { success = true , resposta = "Usuario removido"});
             }
             else
             {

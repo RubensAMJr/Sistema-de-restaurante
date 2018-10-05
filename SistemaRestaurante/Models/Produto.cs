@@ -20,6 +20,7 @@ namespace SistemaRestaurante.Models
         public double Preco { get; set; }
         public string Descricao { get; set; }
         public bool EstaEmFalta { get; set; }
+        public int numeroVendas { get; set; }
     }
 
 

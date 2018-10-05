@@ -114,8 +114,13 @@ namespace SistemaRestaurante.Controllers
                 dao.Atualizar(produto);
                 return Json(new { success = true, Produto = produto , format = String.Format("{0:N}", produto.Preco) }, JsonRequestBehavior.AllowGet);
             }
-            
+        }
 
+        [Route("BuscaProdutos")]
+        public ActionResult BuscaProdutos()
+        {
+            ProdutoDAO dao = new ProdutoDAO();
+            return Json(new { data = dao.Listar() },JsonRequestBehavior.AllowGet);
         }
         
     }

@@ -31,6 +31,7 @@
     <link href="~/Content/CSS/buttons.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/CSS/select.bootstrap4.min.css" rel="stylesheet" />
     <link href="~/Content/CSS/select.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS/snack.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
@@ -118,6 +119,13 @@
                         <span>Registros</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRelatorio")">
+                        <i class="fas fa-chart-pie hvr-icon"></i>
+                        <span>Relatórios</span>
+                    </a>
+                </li>
             }
         </ul>
 
@@ -160,7 +168,7 @@
                                     </tr>
                                 </tfoot>
                                 <tbody id="tabela-produtos">
-                                    @foreach (var produto in ViewBag.Produtos)
+                                    @*@foreach (var produto in ViewBag.Produtos)
                                     {
 
                                         <tr id="@produto.Nome">
@@ -176,9 +184,10 @@
                                                 <td>NÃO</td>
                                             }
                                         </tr>
-                                    }
+                                    }*@
                                 </tbody>
                             </table>
+                            <div id="snackbar"></div>
                         </div>
                     </div>
                 </div>
@@ -244,12 +253,8 @@
                             <label for="descricao">Descrição:</label>
                             <textarea name="descricao" id="descricao" class="form-control" rows="5" cols="30"></textarea>
                         </div>
-                        <button class="btn btn-success" onclick="adicionarProduto()">Adicionar produto</button>
+                        <button class="btn btn-success" data-dismiss="modal" onclick="adicionarProduto()">Adicionar produto</button>
                     </form>
-                    <div class="alert alert-success sucesso-adiciona" role="alert">
-                    </div>
-                    <div class="alert alert-danger falha-adiciona" role="alert">
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -280,7 +285,7 @@
                             <label for="descricaoEditar">Descrição:</label>
                             <textarea name="descricaoEditar" id="descricaoEditar" class="form-control" rows="5" cols="30"></textarea>
                         </div>
-                        <button class="btn btn-success" onclick="editaProduto()">Editar produto</button>
+                        <button class="btn btn-success" data-dismiss="modal" onclick="editaProduto()">Editar produto</button>
                     </form>
                 </div>
                 <div class="modal-footer">

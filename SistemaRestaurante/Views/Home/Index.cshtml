@@ -117,6 +117,13 @@
                         <span>Registros</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRelatorio")">
+                        <i class="fas fa-chart-pie hvr-icon"></i>
+                        <span>Relatórios</span>
+                    </a>
+                </li>
             }
         </ul>
 
@@ -140,15 +147,24 @@
                         <script>
                         var c = document.getElementById("@mesas.MesaId");
                         var ctx = c.getContext("2d");
-
                         //Define a cor
-                        ctx.fillStyle = "#30a832";
-                        ctx.fillRect(0, 0, 200, 150);
-                        //Desenha a linha
-                        ctx.beginPath();
+                        @if (mesas.Ocupada == false)
+                        {
+                            <text>
+                            ctx.fillStyle = "#30a832";
+                            ctx.fillRect(0, 0, 200, 150);
+                            </text>
+
+                        }
+                        else {
+                            <text>
+                            ctx.fillStyle = "#fff605";
+                            ctx.fillRect(0, 0, 200, 150);
+                            </text>
+                        }
                         ctx.moveTo(0, 70);
                         ctx.lineTo(200, 70);
-                           ctx.lineWidth = 2;
+                        ctx.lineWidth = 2;
                         ctx.stroke();
                         //Fonte e cor do texto
                         ctx.font = "30px Open Sans Condensed , sans-serif";
@@ -157,7 +173,6 @@
                         ctx.fillText("Mesa @mesas.Numero", 10, 50);
                         ctx.beginPath();
                         ctx.font = "15px Open Sans Condensed , sans-serif";
-
                         </script>
                     </a>
 
@@ -401,7 +416,7 @@
                         mesaId, comandaId, userId
                     },
                     success: function (data) {
-
+                        $("#tabela-Itens").children().remove();
                         if (data.success == true) {
                             $("#btnPedido").attr('disabled', false);
                             var selecionado = $("#comandasTotal option:selected");
@@ -410,6 +425,7 @@
                             if ($("#comandasTotal").children().length == 0) {
                                 $("#btnAddComanda").attr('disabled', true);
                             }
+                            $("#")
                         } else {
 
                         }
@@ -506,12 +522,13 @@
             event.preventDefault();
             var comandaId = $("#comandas option:selected").val();
             var numeroComanda = $("#comandas option:selected").text();
+            var mesaId = $(".modal-title").attr("id");
             $.ajax(
                 {
                     type: 'POST',
                     url: 'ExcluiComanda',
                     data: {
-                        comandaId
+                        comandaId, mesaId
                     },
                     cache: false,
                     async: true,
@@ -564,7 +581,7 @@
                                 remove.click(function () {
                                     removeItem(itens[i].Id,this);
                                 });
-                                var icone = $("<i>").addClass("fas fa-archive");
+                                var icone = $("<i>").addClass("fas fa-times");
                                 remove.append(icone);
                                 colunaRemove.append(remove);
 
@@ -611,12 +628,13 @@
         }
 
         function removeItem(itemId, atual) {
+            var comandaId = $("#comandas option:selected").val();
             $.ajax(
                 {
                     type: 'POST',
                     url: 'ExcluiItem',
                     data: {
-                        itemId
+                        itemId, comandaId
                     },
                     success: function (data) {
                         if (data.success == true) {
@@ -628,6 +646,29 @@
                     }
                 });
             
+        }
+
+        function modelaCanvas(mesaId,numeroMesa) {
+          
+                        var c = document.getElementById(mesaId);
+                        var ctx = c.getContext("2d");
+
+                        //Define a cor
+                        ctx.fillStyle = "#30a832";
+                        ctx.fillRect(0, 0, 200, 150);
+                        //Desenha a linha
+                        ctx.beginPath();
+                        ctx.moveTo(0, 70);
+                        ctx.lineTo(200, 70);
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        //Fonte e cor do texto
+                        ctx.font = "30px Open Sans Condensed , sans-serif";
+                        ctx.fillStyle = "black";
+                        //Adiciona Texto
+                        ctx.fillText("Mesa " + numeroMesa, 10, 50);
+                        ctx.beginPath();
+                        ctx.font = "15px Open Sans Condensed , sans-serif";
         }
     </script>
 

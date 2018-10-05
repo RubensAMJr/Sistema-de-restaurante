@@ -1,9 +1,4 @@
-﻿
-$(document).ready(function () {
-    $(".sucesso").toggle();
-    $(".falha").toggle();
-});
-function removeUsuario(Nome) {
+﻿function removeUsuario(Nome) {
     event.preventDefault();
     $.ajax(
         {
@@ -16,16 +11,27 @@ function removeUsuario(Nome) {
             async: true,
             success: function (data) {
                 if (data.success == true) {
-                    $(".sucesso").text(data.resposta).toggle().fadeOut(7000);
-                    setTimeout(function () {
-                        $(".sucesso").text(data.resposta).toggle();
-                    }, 7000)
                     $("#" + Nome).remove();
-
+                    mostraMensagem2(data.resposta, false);
                 } else {
-                    $(".falha").text(data.resposta).toggle().fadeOut(6000);
+                    mostraMensagem2(data.resposta, false);
                 }
             }
         });
+}
+
+function mostraMensagem2(resposta, success) {
+    var x = $(".snackbar2");
+    console.log(x);
+    x.text(resposta);
+    if (success == true) {
+        x.css("background-color", "green");
+    } else {
+        x.css("background-color", "red");
+    }
+    x.addClass("show");
+    setTimeout(function () {
+        x.removeClass("show")
+    }, 3000);
 }
 

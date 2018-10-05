@@ -1568,6 +1568,7 @@
     </Compile>
     <Compile Include="Controllers\ProdutosController.cs" />
     <Compile Include="Controllers\RegistroController.cs" />
+    <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="DAO\CartaoDAO.cs" />
     <Compile Include="DAO\ComandaDAO.cs" />
     <Compile Include="DAO\MesasDAO.cs" />
@@ -1655,6 +1656,14 @@
     <Compile Include="Migrations\20180928155214_Corrigindo4.designer.cs">
       <DependentUpon>20180928155214_Corrigindo4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20181004172916_QuantidadeProduto.cs" />
+    <Compile Include="Migrations\20181004172916_QuantidadeProduto.designer.cs">
+      <DependentUpon>20181004172916_QuantidadeProduto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20181004194246_MesaOcupada.cs" />
+    <Compile Include="Migrations\20181004194246_MesaOcupada.designer.cs">
+      <DependentUpon>20181004194246_MesaOcupada.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\Mesa.cs" />
@@ -1736,6 +1745,7 @@
     <Content Include="Views\Caixa\Index.cshtml" />
     <Content Include="Views\Cozinha\Index.cshtml" />
     <Content Include="Views\Registro\Index.cshtml" />
+    <Content Include="Views\Relatorio\Relatorio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

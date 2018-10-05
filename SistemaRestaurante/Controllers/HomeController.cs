@@ -61,6 +61,10 @@ namespace SistemaRestaurante.Controllers
             }
             else
             {
+                MesasDAO dao = new MesasDAO();
+                Mesa mesa = dao.BuscaPorId(mesaId);
+                mesa.Ocupada = true;
+                dao.Atualizar(mesa);
                 Pedido pedido = new Pedido();
                 comanda.MesaId = mesaId;
                 comanda.Pedido = pedido;
@@ -77,12 +81,19 @@ namespace SistemaRestaurante.Controllers
         }
 
         [Route("ExcluiComanda")]
-        public ActionResult ExcluiComanda(int comandaId)
+        public ActionResult ExcluiComanda(int comandaId,int mesaId)
         {
             ComandaDAO dao = new ComandaDAO();
             PedidoDAO pedidoDao = new PedidoDAO();
             Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
             pedidoDao.Excluir(pedido);
+            if (dao.ListarPorMesa(mesaId).Count == 0)
+            {
+                MesasDAO mesaDao = new MesasDAO();
+                Mesa mesa = mesaDao.BuscaPorId(mesaId);
+                mesa.Ocupada = false;
+                mesaDao.Atualizar(mesa);
+            }
             Comanda comanda = dao.BuscaPorId(comandaId);
             comanda.MesaId = null;
             dao.Atualizar(comanda);
@@ -106,7 +117,10 @@ namespace SistemaRestaurante.Controllers
                 item.Produto = produto;
                 pedido.Itens.Add(item);
                 pedido.ValorTotal += produto.Preco;
+                produto.numeroVendas++;
+
            }
+            produtoDao.Atualizar(produto);
             pedidoDao.Atualizar(pedido);
             ItemPedido ultimo = itemDao.BuscaUltimo();
             return Json(new { success = true, Nome = produto.Nome, observacao, Entregue = false, ItemId = ultimo.Id, JsonRequestBehavior.AllowGet });
@@ -123,11 +137,14 @@ namespace SistemaRestaurante.Controllers
         }
 
         [Route("ExcluiItem")]
-        public ActionResult ExcluirPedido(int itemId)
-        { 
-
+        public ActionResult ExcluirPedido(int itemId,int comandaId)
+        {
+            ProdutoDAO prodDao = new ProdutoDAO();
+            PedidoDAO pedDao = new PedidoDAO();
+            Pedido pedido = pedDao.BuscaPorComanda(comandaId);
             ItemPedidoDAO dao = new ItemPedidoDAO();
-            ItemPedido item = dao.BuscaPorId(itemId);
+            ItemPedido item = dao.BuscaPorIdComProduto(itemId);
+            Produto produto = prodDao.BuscaPorId(item.Produto.Id);
             if (item == null)
             {
                 return Json(new { success = false, resposta = "Item não existe" }, JsonRequestBehavior.AllowGet);
@@ -137,7 +154,11 @@ namespace SistemaRestaurante.Controllers
             }
             else
             {
+                produto.numeroVendas--;
+                pedido.ValorTotal -= item.Produto.Preco;
+                pedDao.Atualizar(pedido);
                 dao.Excluir(item);
+                prodDao.Atualizar(produto);
                 return Json(new { success = true, resposta = "Item foi removido" }, JsonRequestBehavior.AllowGet);
             }
         }

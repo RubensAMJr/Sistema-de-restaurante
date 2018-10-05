@@ -1,8 +1,4 @@
-﻿$(document).ready(function () {
-    $(".sucesso-comanda").toggle();
-    $(".falha-comanda").toggle();
-});
-function adicionaComanda() {
+﻿function adicionaComanda() {
     event.preventDefault();
     var numeroComanda = $("#numeroComanda").val();
     $.ajax(
@@ -16,8 +12,7 @@ function adicionaComanda() {
             async: true,
             success: function (data) {
                 if (data.success == true) {
-                    console.log("oi");
-                    var linha = $("<tr>").attr("id", data.Comanda.Numero);
+                    var linha = $("<tr>").attr("id", data.Comanda.Id);
                     var colunaId = $("<td>").text(data.Comanda.Id);
                     var colunaNumero = $("<td>").text(data.Comanda.Numero);
                     var colunaBotao = $("<td>");
@@ -29,16 +24,17 @@ function adicionaComanda() {
                     linha.append(colunaNumero);
                     linha.append(colunaBotao);
                     $(".tabela-Comanda").append(linha);
-                    $(".sucesso-comanda").text("Comanda adicionada com sucesso").toggle().fadeOut(6000);
+                    mostraMensagem3("Comanda adicionada com sucesso",true);
                 } else {
-                    $(".falha-comanda").text(data.resposta).toggle().fadeOut(6000);
+                    mostraMensagem3(data.resposta,false);
                 }
             },
             error: function (data) {
             }
         });
 }
-function removeComanda(numeroComanda) {
+function removeComanda(nmrComanda) {
+    var numeroComanda = parseInt(nmrComanda);
     event.preventDefault();
     $.ajax(
         {
@@ -49,9 +45,24 @@ function removeComanda(numeroComanda) {
             },
             cache: false,
             async: true,
-            success: function () {
-                $("#" + numeroComanda).remove();
-                $(".sucesso-comanda").text("Comanda removida com sucesso").toggle().fadeOut(6000);
+            success: function (data) {
+                $("#" + data.Id).remove();
+                mostraMensagem3("Comanda removida",false);
             }
         });
+}
+
+function mostraMensagem3(resposta, success) {
+    var x = $(".snackbar3");
+    console.log(x);
+    x.text(resposta);
+    if (success == true) {
+        x.css("background-color", "green");
+    } else {
+        x.css("background-color", "red");
+    }
+    x.addClass("show");
+    setTimeout(function () {
+        x.removeClass("show")
+    }, 3000);
 }

@@ -79,7 +79,7 @@ namespace SistemaRestaurante.DAO
         {
             using (var contexto = new RestauranteContext())
             {
-                return contexto.Usuarios.FirstOrDefault(u => u.Nome == usuario && u.Senha == senha);
+                return contexto.Usuarios.FirstOrDefault(u => u.Login == usuario && u.Senha == senha);
             }
         }
 

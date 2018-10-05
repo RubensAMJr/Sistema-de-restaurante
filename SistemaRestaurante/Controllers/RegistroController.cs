@@ -3,6 +3,7 @@ using SistemaRestaurante.Filters;
 using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -90,8 +91,10 @@ namespace SistemaRestaurante.Controllers
         public ActionResult RemoverComanda(int numeroComanda)
         {
             ComandaDAO dao = new ComandaDAO();
-            dao.Excluir(numeroComanda);
-            return Json(numeroComanda);
+            Comanda comanda = dao.BuscaPorNumero(numeroComanda);
+            Debug.WriteLine(comanda.Numero);
+            dao.Excluir(comanda);
+            return Json(new { Id = comanda.Id});
         }
 
         [Route("AdicionaCartao")]

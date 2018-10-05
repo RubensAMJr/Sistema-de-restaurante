@@ -1,10 +1,4 @@
-﻿
-$(document).ready(function () {
-    $(".sucesso-cartao").toggle();
-    $(".falha-cartao").toggle();
-});
-
-function adicionaCartao() {
+﻿function adicionaCartao() {
     event.preventDefault();
     var nomeCliente = $("#nomeCliente").val();
     var numeroCartao = $("#numeroCartao").val();
@@ -19,7 +13,6 @@ function adicionaCartao() {
             async: true,
             success: function (data) {
                 if (data.success == true) {
-                    console.log("oi");
                     var linha = $("<tr>").attr("id", data.Cartao.NumeroCartao);
                     var colunaId = $("<td>").text(data.Cartao.Id);
                     var colunaNome = $("<td>").text(data.Cartao.NomeCliente);
@@ -35,8 +28,10 @@ function adicionaCartao() {
                     linha.append(colunaBotao);
                     $(".tabela-Cartao").append(linha);
                     $(".sucesso-cartao").text("Cartão adicionado com sucesso").toggle().fadeOut(6000);
+                    mostraMensagem4("Cartão adicionado com sucesso",true);
                 } else {
                     $(".falha-cartao").text(data.resposta).toggle().fadeOut(6000);
+                    mostraMensagem4(data.resposta, false);
                 }
             },
             error: function (data) {
@@ -58,9 +53,24 @@ function removeCartao(numeroCartao) {
             async: true,
             success: function () {
                 $("#" + numeroCartao).remove();
-                $(".sucesso-cartao").text("Cartão removido com sucesso").toggle().fadeOut(6000);
+                mostraMensagem4("Cartão removido",false);
             }
         });
+}
+
+function mostraMensagem4(resposta, success) {
+    var x = $(".snackbar4");
+    console.log(x);
+    x.text(resposta);
+    if (success == true) {
+        x.css("background-color", "green");
+    } else {
+        x.css("background-color", "red");
+    }
+    x.addClass("show");
+    setTimeout(function () {
+        x.removeClass("show")
+    }, 3000);
 }
 
 

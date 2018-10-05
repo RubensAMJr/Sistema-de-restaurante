@@ -116,6 +116,13 @@
                         <span>Registros</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRelatorio")">
+                        <i class="fas fa-chart-pie hvr-icon"></i>
+                        <span>Relatórios</span>
+                    </a>
+                </li>
             }
         </ul>
 
@@ -317,12 +324,13 @@
                             habilitarCampos();
                             var itens = data.ItemPedido;
                             $(itens).each(function (i) {
+                                var total = data.Total;
                                 var linha = $("<tr>");
                                 var colunaProduto = $("<td>").text(itens[i].Produto.Nome);
                                 var colunaObservacao = $("<td>").text(itens[i].Observacao);
                                 var colunaPreco = $("<td>").text(itens[i].Produto.Preco);
-                                $("#total").val(data.Total);
-                                $("#desconto").val(data.Total);
+                                $("#total").val(total.toFixed(2));
+                                $("#desconto").val(total.toFixed(2));
                                 linha.append(colunaProduto);
                                 linha.append(colunaObservacao);
                                 linha.append(colunaPreco);
@@ -395,8 +403,8 @@
             if (parseFloat(recebido) >= parseFloat(total)) {
                 $(".titulo-modal").text("Finalizar Comanda " + $("#nmrComanda").val());
                 $("#totalPedido").text("Total: "+total);
-                $("#dinheiro").text("Dinheiro recebido: "+recebido);
-                $("#troco").text("Troco: "+(parseFloat(recebido) - parseFloat(total)));
+                $("#dinheiro").text("Dinheiro recebido: " + recebido);
+                $("#troco").text("Troco: " + (parseFloat(recebido) - parseFloat(total)).toFixed(2));
                 $("#modalFinaliza").modal();
                 $("#finalizaTudo").click(function () {
                     finalizaComanda($("#nmrComanda").val());

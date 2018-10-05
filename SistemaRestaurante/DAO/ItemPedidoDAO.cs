@@ -48,6 +48,16 @@ namespace SistemaRestaurante.DAO
 
         }
 
+        public IList<ItemPedido> ListarPorNomeProduto(string nomeProduto)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+
+                return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).Where(i => i.Produto.Nome == nomeProduto).ToList();
+            }
+
+        }
+
         public IList<ItemPedido> ListarEntregues(int pedidoId)
         {
             using (var contexto = new RestauranteContext())
@@ -93,6 +103,26 @@ namespace SistemaRestaurante.DAO
                 return contexto.ItensPedido.LastOrDefault();
             }
         }
+
+        public ItemPedido BuscaPorIdComProduto(int id)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.ItensPedido.Include(Item => Item.Produto).FirstOrDefault(i => i.Id == id);
+            }
+        }
+
+        //public IList<ItemPedido> ConsultaBanco()
+        //{
+        //    using (var contexto = new RestauranteContext())
+        //    {
+        //        
+        //       //return contexto.ItensPedido.Include(ItemPedido => ItemPedido.Produto).Where(i => i.Produto.Nome == nomeProduto).ToList();
+        //        contexto.ItensPedido.Include(ip => ip.Produto).GroupBy(ip => ip.Produto.Id, ip => ip.Produto.Nome).SelectMany()
+        //        return contexto.ItensPedido.FromSql("SELECT b.Nome, count(1) FROM ItensPedido A JOIN PRODUTOS B ON B.Id = A.ProdutoId group by a.ProdutoId, b.nome order by count(1) desc").ToList();
+        //    }
+        //
+        //}
 
     }
 }

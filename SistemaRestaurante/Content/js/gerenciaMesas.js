@@ -1,8 +1,4 @@
-﻿$(document).ready(function () {
-    $(".sucesso-mesa").toggle();
-    $(".falha-mesa").toggle();
-});
-
+﻿
 function removeMesa(numeroMesa) {
     event.preventDefault();
     $.ajax(
@@ -16,7 +12,8 @@ function removeMesa(numeroMesa) {
             async: true,
             success: function () {
                 $("#" + numeroMesa).remove();
-                $(".sucesso-mesa").text("Mesa removida com sucesso").toggle().fadeOut(6000);
+                mostraMensagem("Mesa foi removida", false);
+
 
             }
         });
@@ -35,7 +32,6 @@ function adicionaMesa() {
             async: true,
             success: function (data) {
                 if (data.success == true) {
-                    console.log("oi");
                     var linha = $("<tr>").attr("id", data.Mesa.Numero);
                     var colunaId = $("<td>").text(data.Mesa.MesaId);
                     var colunaNumero = $("<td>").text(data.Mesa.Numero);
@@ -48,17 +44,29 @@ function adicionaMesa() {
                     linha.append(colunaNumero);
                     linha.append(colunaBotao);
                     $(".tabela-Mesa").append(linha);
-
-                    $(".sucesso-mesa").text("Mesa adicionada com sucesso").toggle().fadeOut(6000);
-                    
+                    mostraMensagem("Mesa adicionada com sucesso", true);
                 } else {
-                    $(".falha-mesa").text(data.resposta).toggle().fadeOut(6000);
+                    mostraMensagem(data.resposta, false);
                 }
             },
             error: function (data) {
                 
             }
         });
+}
+
+function mostraMensagem(resposta, success) {
+    var x = $("#snackbar");
+    x.text(resposta);
+    if (success == true) {
+        x.css("background-color", "green");
+    } else {
+        x.css("background-color", "red");
+    }
+    x.addClass("show");
+    setTimeout(function () {
+        x.removeClass("show")
+    }, 3000);
 }
 
 

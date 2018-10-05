@@ -10,7 +10,7 @@ namespace SistemaRestaurante.Models
 
         public int MesaId { get; set; }
         public int Numero { get; set; }
-
+        public bool Ocupada { get; set; }
 
         public Mesa(int numero)
         {

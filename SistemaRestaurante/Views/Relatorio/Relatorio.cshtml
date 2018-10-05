@@ -1,6 +1,10 @@
 ﻿@using SistemaRestaurante.Models;
 @{Usuario user = (Usuario)Session["Admin"];}
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,17 +15,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
     <title>Ambiente - Restaurante</title>
+
     <!-- Bootstrap core CSS-->
     <link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom fonts for this template-->
     <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
     <!-- Page level plugin CSS-->
     <link href="~/Content/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <link href="~/Content/CSS/hover.css" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
+
+    <link href="~/Content/CSS/snack.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -75,7 +87,7 @@
             }
             @if (user.Cargo.Equals("COZINHEIRO") || user.Cargo.Equals("GERENTE"))
             {
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewCozinha")">
                         <i class="fas fa-cookie hvr-icon"></i>
                         <span>Cozinha</span>
@@ -109,7 +121,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRelatorio")">
                         <i class="fas fa-chart-pie hvr-icon"></i>
                         <span>Relatórios</span>
@@ -122,71 +134,34 @@
 
             <div class="container-fluid">
 
-                <!-- Breadcrumbs-->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="#">Pedidos</a>
-                    </li>
-                    <li class="breadcrumb-item active">Lista</li>
-                </ol>
-                <!--PEDIDOS-->
-                @foreach (var pedido in ViewBag.Pedidos)
-                {
-                    <a data-toggle="modal" data-target="#myModal" href="#" onclick="abreModal(@pedido.Id)">
-
-                        <canvas id="@pedido.Id" width="300" height="200" style="border:2px dotted #000000;">
-                            Canvas não suportado.
-                        </canvas>
-                        <script>
-                            var c = document.getElementById("@pedido.Id");
-                            var ctx = c.getContext("2d");
-                            //Adiciona Cor
-                            ctx.fillStyle = "#30a832";
-                            ctx.font = "30px Verdana";
-                            ctx.fillRect(0, 0, 300, 200);
-                            //Desenha linha
-                            ctx.beginPath();
-                            ctx.moveTo(0, 150);
-                            ctx.lineTo(99999, 70);
-                            ctx.stroke();
-                            //Define cor e Fonte
-                            ctx.fillStyle = "black";
-                            ctx.font = "30px Open Sans Condensed , sans-serif";
-                            //Adiciona informações
-                            ctx.fillText("Pedido @pedido.Id", 5, 40);
-                            ctx.beginPath();
-                            ctx.font = "15px Open Sans Condensed , sans-serif";
-                            ctx.fillText("Produto: @pedido.Produto.Nome ", 5, 65);
-
-
-                            ctx.beginPath();
-                            ctx.font = "15px Open Sans Condensed , sans-serif";
-                            ctx.fillText("Observação: @pedido.Observacao", 10, 170);
-                        </script>
-                    </a>
-
-                }
-
-                <div id="modalFinaliza" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Comandas</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <span class=""></span>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-chart-bar"></i>
+                                Garçons com mais pedidos
                             </div>
-                            <div class="modal-body">
-                                <p>Finalizar pedido?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-default" id="finalizaTudo" data-dismiss="modal">Finalizar Pedido</button>
+                            <div class="card-body">
+                                <canvas id="myBarChart" width="100%" height="50"></canvas>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <i class="fas fa-chart-pie"></i>
+                                Produtos mais vendidos
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myPieChart" width="100%" height="100"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+                <!-- Breadcrumbs-->
+                <!--MESAS-->
                 <!-- Area Chart Example-->
                 <!-- /.container-fluid -->
                 <!-- Sticky Footer -->
@@ -200,6 +175,8 @@
             </div>
             <!-- /.content-wrapper -->
         </div>
+
+
         <!-- /#wrapper -->
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
@@ -225,52 +202,81 @@
         </div>
     </div>
     <!-- Bootstrap core JavaScript-->
+    <script src="~/Content/vendor/jquery/jquery.js"></script>
     <script src="~/Content/vendor/jquery/jquery.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level plugin JavaScript-->
-    <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
-    <script src="~/Content/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="~/Content/js/sb-admin.min.js"></script>
-
-
     <!-- Demo scripts for this page-->
-    <script src="~/Content/js/demo/datatables-demo.js"></script>
-    <script src="~/Content/js/demo/chart-area-demo.js"></script>
-
     <script>
-        function abreModal(pedidoId) {
-            $("#modalFinaliza").modal();
-            $("#finalizaTudo").click(function () {
-                finalizaPedido(pedidoId);
-            });
-        }
+        $(document).ready(function () {
+            Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+            Chart.defaults.global.defaultFontColor = '#292b2c';
 
-        function finalizaPedido(pedidoId) {
-            $.ajax(
-                {
-                    type: 'POST',
-                    url: 'RemoveItem',
-                    data: {
-                       pedidoId
+            var ctx = document.getElementById("myBarChart");
+            var myLineChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Garçom1", "Garçom2", "Garçom3", "Garçom4", "Garçom5", "Garçom6"],
+                    datasets: [{
+                        label: "Pedidos",
+                        backgroundColor: "rgba(2,117,216,1)",
+                        borderColor: "rgba(2,117,216,1)",
+                        data: [30, 50, 100, 200, 10, 40],
+                    }],
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'month'
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 6
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                                max: 200,
+                                maxTicksLimit: 5
+                            },
+                            gridLines: {
+                                display: true
+                            }
+                        }],
                     },
-                    success: function (data) {
-                        if (data.success == true) {
-                            $("#" + pedidoId).remove();
-                        } else {
-
-                        }
+                    legend: {
+                        display: false
                     }
-                });
-        }
+                }
+            });
 
+            var ctx = document.getElementById("myPieChart");
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ["Cheddar", "Vulcano", "Big Cheese", "Coca-Cola"],
+                    datasets: [{
+                        data: [12.21, 15.58, 11.25, 8.32],
+                        backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+                    }],
+                },
+            });
+
+
+        });
+       
 
     </script>
 

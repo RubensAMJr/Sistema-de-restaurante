@@ -28,6 +28,8 @@
     <!-- Custom styles for this template-->
     <link href="~/Content/CSS/sb-admin.css" rel="stylesheet">
 
+    <link href="~/Content/CSS/snack.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -108,6 +110,13 @@
                     <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRegistros")">
                         <i class="fas fa-archive hvr-icon"></i>
                         <span>Registros</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link hvr-icon-back" href="@Url.RouteUrl("ViewRelatorio")">
+                        <i class="fas fa-chart-pie hvr-icon"></i>
+                        <span>Relatórios</span>
                     </a>
                 </li>
             }
@@ -223,11 +232,8 @@
                                                 }
                                             </tbody>
                                         </table>
-                                        <div class="alert alert-success sucesso-mesa" role="alert">
-                                        </div>
-                                        <div class="alert alert-danger falha-mesa" role="alert">
-                                        </div>
                                     </div>
+                                <div id="snackbar"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -278,12 +284,8 @@
                                             </tbody>
 
                                         </table>
-
-                                        <div class="alert alert-success sucesso" role="alert">
-                                        </div>
-                                        <div class="alert alert-danger falha" role="alert">
-                                        </div>
                                     </div>
+                                        <div class="snackbar2" id="snackbar"></div>
 
                                 </div>
                             </form>
@@ -299,7 +301,7 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">Gerenciar Mesas</h4>
+                                <h4 class="modal-title">Gerenciar Comandas</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <form action="AdicionaMesa">
@@ -325,7 +327,7 @@
                                             <tbody class="tabela-Comanda">
                                                 @foreach (var comanda in ViewBag.Comandas)
                                                 {
-                                                    <tr id="@comanda.Numero">
+                                                    <tr id="@comanda.Id">
                                                         <td>@comanda.Id</td>
                                                         <td>@comanda.Numero</td>
                                                         <td><button class="btn btn-sm btn-danger btnRemover" onclick="removeComanda(@comanda.Numero)">Remover</button></td>
@@ -333,11 +335,8 @@
                                                 }
                                             </tbody>
                                         </table>
-                                        <div class="alert alert-success sucesso-comanda" role="alert">
-                                        </div>
-                                        <div class="alert alert-danger falha-comanda" role="alert">
-                                        </div>
                                     </div>
+                                        <div class="snackbar3" id="snackbar"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -389,11 +388,8 @@
                                                 }
                                             </tbody>
                                         </table>
-                                        <div class="alert alert-success sucesso-cartao" role="alert">
-                                        </div>
-                                        <div class="alert alert-danger falha-cartao" role="alert">
-                                        </div>
                                     </div>
+                                        <div class="snackbar4" id="snackbar"></div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

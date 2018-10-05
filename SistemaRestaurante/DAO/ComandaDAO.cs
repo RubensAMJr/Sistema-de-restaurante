@@ -64,11 +64,19 @@ namespace SistemaRestaurante.DAO
             }
         }
 
-        public void Excluir(int numeroComanda)
+        public void ExcluirPorNumero(int numeroComanda)
         {
             using (var contexto = new RestauranteContext())
             {
                 contexto.Comandas.Remove(contexto.Comandas.FirstOrDefault(c => c.Numero == numeroComanda));
+                contexto.SaveChanges();
+            }
+        }
+        public void Excluir(Comanda comanda)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                contexto.Comandas.Remove(comanda);
                 contexto.SaveChanges();
             }
         }
@@ -86,6 +94,14 @@ namespace SistemaRestaurante.DAO
             using (var contexto = new RestauranteContext())
             {
                 return contexto.Comandas.Include(Comanda => Comanda.Pedido).FirstOrDefault(c => c.Numero == numeroComanda);
+            }
+        }
+
+        public Comanda BuscaPorIdComPedido(int id)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Comandas.Include(Comanda => Comanda.Pedido).FirstOrDefault(c => c.Id == id);
             }
         }
 

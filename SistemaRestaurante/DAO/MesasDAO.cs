@@ -60,5 +60,13 @@ namespace SistemaRestaurante.DAO
                 return contexto.Mesas.FirstOrDefault(m => m.Numero == numeroMesa);
             }
         }
+
+        public Mesa BuscaPorId(int mesaId)
+        {
+            using (var contexto = new RestauranteContext())
+            {
+                return contexto.Mesas.FirstOrDefault(m => m.MesaId == mesaId);
+            }
+        }
     }
 }
