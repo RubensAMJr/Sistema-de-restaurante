@@ -102,13 +102,15 @@ namespace SistemaRestaurante.Controllers
         }
 
         [Route("FinalizaPedido")]
-        public ActionResult Finaliza(int comandaId,string observacao,int quantidade,int produtoId)
+        public ActionResult Finaliza(int comandaId,string observacao,int quantidade,int produtoId,int usuarioId)
         {
-            ItemPedidoDAO itemDao = new ItemPedidoDAO();
+            UsuarioDAO userDao = new UsuarioDAO();
+           ItemPedidoDAO itemDao = new ItemPedidoDAO();
            PedidoDAO pedidoDao = new PedidoDAO();
            ProdutoDAO produtoDao = new ProdutoDAO();
            Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
            Produto produto = produtoDao.BuscaPorId(produtoId);
+            Usuario user = userDao.BuscaPorId(usuarioId);
            for (int i = 0; i <= quantidade -1; i++)
            {
                 ItemPedido item = new ItemPedido();
@@ -116,10 +118,11 @@ namespace SistemaRestaurante.Controllers
                 item.Observacao = observacao;
                 item.Produto = produto;
                 pedido.Itens.Add(item);
-                pedido.ValorTotal += produto.Preco;
                 produto.numeroVendas++;
+                user.NumeroPedidos++;
 
            }
+            userDao.Atualizar(user);
             produtoDao.Atualizar(produto);
             pedidoDao.Atualizar(pedido);
             ItemPedido ultimo = itemDao.BuscaUltimo();

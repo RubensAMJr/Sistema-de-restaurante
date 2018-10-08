@@ -15,7 +15,23 @@ namespace SistemaRestaurante.Controllers
         public ActionResult Relatorio()
         {
             return View();
+
+
+
         }
 
+        [Route("ViewItensNumero")]
+        public ActionResult RelatorioNumero()
+        {
+            IList<Produto> produtos = new ProdutoDAO().Listar().OrderByDescending(p => p.numeroVendas).ToList();
+            return Json(new {success = true, Produtos = produtos},JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("ViewGarcons")]
+        public ActionResult RelatorioGarcom()
+        {
+            IList<Usuario> garcons = new UsuarioDAO().Listar().OrderByDescending(g => g.NumeroPedidos).ToList();
+            return Json(new { success = true, Garcom = garcons }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

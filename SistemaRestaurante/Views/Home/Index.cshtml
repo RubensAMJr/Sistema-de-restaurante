@@ -476,6 +476,7 @@
 
         function finalizarPedido() {
             event.preventDefault();
+            var usuarioId = @user.Id;
             var produtoId = $("#listaPedidos option:selected").val();
             var comandaId = $("#comandas option:selected").val();
             var observacao = $("#observacao").val();
@@ -488,7 +489,7 @@
                     type: 'POST',
                     url: 'FinalizaPedido',
                     data: {
-                        comandaId, observacao, quantidade, produtoId
+                        comandaId, observacao, quantidade, produtoId, usuarioId
                     },
                     cache: false,
                     async: true,

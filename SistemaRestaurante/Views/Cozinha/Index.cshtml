@@ -127,7 +127,7 @@
                 <!-- Breadcrumbs-->
                 <!--PEDIDOS-->
                 @foreach (var pedido in ViewBag.Pedidos) {
-                    <a data-toggle="modal" data-target="#myModal" href="#" onclick="abreModal(@pedido.Id)">
+                    <a data-toggle="modal" data-target="#myModal" href="#" ondblclick="finalizaPedido(@pedido.Id)">
 
                         <canvas id="@pedido.Id" width="300" height="200" style="border:2px solid #000000;">
                             Canvas não suportado.
@@ -293,14 +293,8 @@
     <script src="~/Content/js/demo/chart-area-demo.js"></script>
 
     <script>
-        function abreModal(pedidoId) {
-            $("#modalFinaliza").modal();
-            $("#finalizaTudo").click(function () {
-                finalizaPedido(pedidoId);
-            });
-        }
-
         function finalizaPedido(pedidoId) {
+            console.log("entrei");
             $.ajax(
                 {
                     type: 'POST',

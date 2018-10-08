@@ -10,8 +10,8 @@ using SistemaRestaurante;
 namespace SistemaRestaurante.Migrations
 {
     [DbContext(typeof(RestauranteContext))]
-    [Migration("20181005163931_Inicial")]
-    partial class Inicial
+    [Migration("20181007211557_UPDATE")]
+    partial class UPDATE
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -144,6 +144,8 @@ namespace SistemaRestaurante.Migrations
                     b.Property<string>("Login");
 
                     b.Property<string>("Nome");
+
+                    b.Property<int?>("NumeroPedidos");
 
                     b.Property<string>("Senha");
 

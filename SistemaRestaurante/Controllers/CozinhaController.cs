@@ -33,13 +33,19 @@ namespace SistemaRestaurante.Controllers
         [Route("RemoveItem")]
         public ActionResult Deleta(int pedidoId)
         {
-            ItemPedidoDAO dao = new ItemPedidoDAO();
-            ItemPedido item = dao.BuscaPorId(pedidoId);
-            Pedido pedido = new PedidoDAO().BuscaPorId(pedidoId);
+            PedidoDAO pedDao = new PedidoDAO();
+            ItemPedidoDAO itemDao = new ItemPedidoDAO();
+            ItemPedido item = itemDao.BuscaPorIdComProduto(pedidoId);
+            Debug.WriteLine("Nome Produto: " + item.Produto.Nome);
+            Debug.WriteLine("Preço produto: "+item.Produto.Preco);
+            Pedido pedido = pedDao.BuscaPorId(item.PedidoId);
+            Debug.WriteLine("Valor Total: " + pedido.ValorTotal);
+            pedido.ValorTotal += item.Produto.Preco;
             Comanda comanda = new ComandaDAO().BuscaPorId((int)pedido.ComandaId);
             Mesa mesa = new MesasDAO().BuscaPorId((int)comanda.MesaId);
             item.Entregue = true;
-            dao.Atualizar(item);
+            itemDao.Atualizar(item);
+            pedDao.Atualizar(pedido);
             return Json(new { success = true,resposta = "Pedido finalizado com sucesso",Comanda = comanda.Numero,Mesa = mesa.Numero},JsonRequestBehavior.AllowGet);
         }
     }

@@ -1580,9 +1580,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20181005163931_Inicial.cs" />
-    <Compile Include="Migrations\20181005163931_Inicial.designer.cs">
-      <DependentUpon>20181005163931_Inicial.cs</DependentUpon>
+    <Compile Include="Migrations\20181007211415_Inicial.cs" />
+    <Compile Include="Migrations\20181007211415_Inicial.designer.cs">
+      <DependentUpon>20181007211415_Inicial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20181007211557_UPDATE.cs" />
+    <Compile Include="Migrations\20181007211557_UPDATE.designer.cs">
+      <DependentUpon>20181007211557_UPDATE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20181007213650_correction.cs" />
+    <Compile Include="Migrations\20181007213650_correction.designer.cs">
+      <DependentUpon>20181007213650_correction.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\RestauranteContextModelSnapshot.cs" />
     <Compile Include="Models\Cartao.cs" />
@@ -1592,6 +1600,7 @@
     <Compile Include="Models\Pedido.cs" />
     <Compile Include="Models\Produto.cs" />
     <Compile Include="Models\Comanda.cs" />
+    <Compile Include="Models\Test.cs" />
     <Compile Include="Models\Usuarios\Roles.cs" />
     <Compile Include="Models\Usuarios\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

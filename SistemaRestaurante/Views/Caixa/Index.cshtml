@@ -328,7 +328,7 @@
                                 var linha = $("<tr>");
                                 var colunaProduto = $("<td>").text(itens[i].Produto.Nome);
                                 var colunaObservacao = $("<td>").text(itens[i].Observacao);
-                                var colunaPreco = $("<td>").text(itens[i].Produto.Preco);
+                                var colunaPreco = $("<td>").text(parseFloat(itens[i].Produto.Preco).toFixed(2));
                                 $("#total").val(total.toFixed(2));
                                 $("#desconto").val(total.toFixed(2));
                                 linha.append(colunaProduto);
@@ -402,8 +402,8 @@
             var recebido = $("#inptDinheiro").val();
             if (parseFloat(recebido) >= parseFloat(total)) {
                 $(".titulo-modal").text("Finalizar Comanda " + $("#nmrComanda").val());
-                $("#totalPedido").text("Total: "+total);
-                $("#dinheiro").text("Dinheiro recebido: " + recebido);
+                $("#totalPedido").text("Total: " + total);
+                $("#dinheiro").text("Dinheiro recebido: " + (parseFloat(recebido).toFixed(2)));
                 $("#troco").text("Troco: " + (parseFloat(recebido) - parseFloat(total)).toFixed(2));
                 $("#modalFinaliza").modal();
                 $("#finalizaTudo").click(function () {

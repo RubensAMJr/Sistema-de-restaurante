@@ -76,7 +76,8 @@ namespace SistemaRestaurante.Migrations
                     Cargo = table.Column<string>(nullable: true),
                     Nome = table.Column<string>(nullable: true),
                     Login = table.Column<string>(nullable: true),
-                    Senha = table.Column<string>(nullable: true)
+                    Senha = table.Column<string>(nullable: true),
+                    NumeroPedidos = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
