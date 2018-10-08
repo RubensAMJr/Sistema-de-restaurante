@@ -355,7 +355,7 @@
             $('#btnAddPedido').attr('disabled', true);
             $('#observacao').val('');
             $('#qtdPedido').keyup(function () {
-                if ($(this).val().length != 0 && parseInt($(this).val()) > 0)
+                if ($(this).val().length != 0 && parseInt($(this).val()) > 0 && parseInt($(this).val()) <= 10)
                     $('#btnAddPedido').attr('disabled', false);
                 else
                     $('#btnAddPedido').attr('disabled', true);
