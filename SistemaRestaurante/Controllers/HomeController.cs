@@ -87,6 +87,9 @@ namespace SistemaRestaurante.Controllers
             PedidoDAO pedidoDao = new PedidoDAO();
             Pedido pedido = pedidoDao.BuscaPorComanda(comandaId);
             pedidoDao.Excluir(pedido);
+            Comanda comanda = dao.BuscaPorId(comandaId);
+            comanda.MesaId = null;
+            dao.Atualizar(comanda);
             if (dao.ListarPorMesa(mesaId).Count == 0)
             {
                 MesasDAO mesaDao = new MesasDAO();
@@ -94,9 +97,7 @@ namespace SistemaRestaurante.Controllers
                 mesa.Ocupada = false;
                 mesaDao.Atualizar(mesa);
             }
-            Comanda comanda = dao.BuscaPorId(comandaId);
-            comanda.MesaId = null;
-            dao.Atualizar(comanda);
+
             return Json(new { success = true, resposta = "comanda removida com sucesso" });
 
         }

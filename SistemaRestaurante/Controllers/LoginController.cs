@@ -4,6 +4,7 @@ using SistemaRestaurante.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -69,15 +70,19 @@ namespace SistemaRestaurante.Controllers
         {
             UsuarioDAO dao = new UsuarioDAO();
             Usuario user = dao.Busca(usuario, senha);
-            if (user == null)
+            if (nome.Length <= 3 || usuario.Length <= 3 || senha.Length <= 3 || !Regex.IsMatch(usuario, "^[a-z0-9_-]{3,15}$"))
             {
-                user = new Usuario(cargo,nome,usuario,senha);
-                dao.Adiciona(user);
-                return Json(new { sucess = true, resposta = "Usuario cadastrado com sucesso"},JsonRequestBehavior.AllowGet);
+                return Json(new { sucess = false, resposta = "Dados invalidos" }, JsonRequestBehavior.AllowGet);
+            }
+            else if(user != null)
+            {
+                return Json(new { sucess = false, resposta = "Usuario já existe" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { sucess = false, resposta = "Usuario já existe" }, JsonRequestBehavior.AllowGet);
+                user = new Usuario(cargo, nome, usuario, senha);
+                dao.Adiciona(user);
+                return Json(new { sucess = true, resposta = "Usuario cadastrado com sucesso" }, JsonRequestBehavior.AllowGet);
             }
 
         }
